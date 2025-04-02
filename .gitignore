@@ -172,3 +172,13 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+./examples/
+./examples/**
+./examples/**/*
+./examples/data/**
+
+
+./docs/**
+./docs/
