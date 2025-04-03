@@ -71,59 +71,59 @@ class AlpineBaseModule(nn.Module):
         
         self.loss_function = loss_function
 
-    def fit_signal(self, 
-                   input : torch.Tensor,
-                   signal : torch.Tensor,
-                   n_iters : int = 1000,
-                   enable_tqdm : bool = False,
-                   return_features : bool = False,
-                   track_loss_histroy : bool = False,
-                   kwargs : dict = {},
+    # def fit_signal(self, 
+    #                input : torch.Tensor,
+    #                signal : torch.Tensor,
+    #                n_iters : int = 1000,
+    #                enable_tqdm : bool = False,
+    #                return_features : bool = False,
+    #                track_loss_histroy : bool = False,
+    #                kwargs : dict = {},
                    
-                   ) -> dict:
+    #                ) -> dict:
         
-        """
-        Simple fitting of the signal to the INR model
+    #     """
+    #     Simple fitting of the signal to the INR model
 
-        Args:
-            input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
-            signal (torch.Tensor): _description_
-            n_iters (int, optional): _description_. Defaults to 1000.
-            enable_tqdm (bool, optional): _description_. Defaults to False.
-            return_features (bool, optional): _description_. Defaults to False.
-            **kwargs: Other keyword arguments that is a dict of dicts. 
-        """
-        signal = wrap_signal_instance(signal) # triggers if signal is a torch.Tensor. Alpine's workflow is with dict-based and not tensor based.
-        loss_history = []
+    #     Args:
+    #         input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
+    #         signal (torch.Tensor): _description_
+    #         n_iters (int, optional): _description_. Defaults to 1000.
+    #         enable_tqdm (bool, optional): _description_. Defaults to False.
+    #         return_features (bool, optional): _description_. Defaults to False.
+    #         **kwargs: Other keyword arguments that is a dict of dicts. 
+    #     """
+    #     signal = wrap_signal_instance(signal) # triggers if signal is a torch.Tensor. Alpine's workflow is with dict-based and not tensor based.
+    #     loss_history = []
 
-        iter_pbar = range(n_iters) if not enable_tqdm else tqdm(range(n_iters), **kwargs.get("tqdm_kwargs", {}))
-        for iteration in iter_pbar:
-            self.optimizer.zero_grad()
-            output_packet = self(input, return_features=return_features) # forward pass returns a dict. 
-            loss = self.loss_function(output_packet, signal) # loss function takes in the output packet and the signal.
+    #     iter_pbar = range(n_iters) if not enable_tqdm else tqdm(range(n_iters), **kwargs.get("tqdm_kwargs", {}))
+    #     for iteration in iter_pbar:
+    #         self.optimizer.zero_grad()
+    #         output_packet = self(input, return_features=return_features) # forward pass returns a dict. 
+    #         loss = self.loss_function(output_packet, signal) # loss function takes in the output packet and the signal.
 
-            loss.backward() # backward pass
-            if track_loss_histroy:
-                loss_history.append(float(loss.item())) 
+    #         loss.backward() # backward pass
+    #         if track_loss_histroy:
+    #             loss_history.append(float(loss.item())) 
             
-            self.optimizer.step()
-            if self.scheduler is not None:
-                self.scheduler.step()
+    #         self.optimizer.step()
+    #         if self.scheduler is not None:
+    #             self.scheduler.step()
             
-            if enable_tqdm:
-                iter_pbar.set_description(f"Iteration {iteration}/{n_iters}.  Loss: {loss.item():.6f}")
+    #         if enable_tqdm:
+    #             iter_pbar.set_description(f"Iteration {iteration}/{n_iters}.  Loss: {loss.item():.6f}")
             
         
-        # retvals = dict(loss=float(loss.item()), output = output_packet)
-        retvals = output_packet
-        retvals.update(dict(loss=float(loss.item())))
-        if track_loss_histroy:
-            retvals.update(dict(loss_history = loss_history))
+    #     # retvals = dict(loss=float(loss.item()), output = output_packet)
+    #     retvals = output_packet
+    #     retvals.update(dict(loss=float(loss.item())))
+    #     if track_loss_histroy:
+    #         retvals.update(dict(loss_history = loss_history))
         
         
-        return retvals
+    #     return retvals
     
-    def fit_signal2(self, 
+    def fit_signal(self, 
                    input : torch.Tensor,
                    signal : torch.Tensor,
                    n_iters : int = 1000,

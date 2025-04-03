@@ -43,7 +43,7 @@ def plot_partitions(partition_images_set,  normalize_each=False, title='', figsi
     plt.show()
 
 
-def show_partitions(partitions,  normalize_each=False, title='', figsize=(10,15), dpi=200,):
+def show_partitions(partitions,  normalize_each=False, title='', figsize=(10,15), dpi=100,):
     """_summary_
 
     Args:

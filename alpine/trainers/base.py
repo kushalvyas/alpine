@@ -39,46 +39,46 @@ class BaseINR(nn.Module):
         self.is_model_compiled = True
         
     
-    def fit_signal(self, input, signal, n_iters=1000, enable_tqdm=False, return_features=False):
-        """Fit the model to the given signal
+    # def fit_signal(self, input, signal, n_iters=1000, enable_tqdm=False, return_features=False):
+    #     """Fit the model to the given signal
 
-        Args:
-            input (torch.Tensor): (N x 2) input coordinates
-            signal (_type_): _description_
-            n_iters (int, optional): _description_. Defaults to 1000.
-            enable_tqdm (bool, optional): _description_. Defaults to False.
-            return_features (bool, optional): _description_. Defaults to False.
+    #     Args:
+    #         input (torch.Tensor): (N x 2) input coordinates
+    #         signal (_type_): _description_
+    #         n_iters (int, optional): _description_. Defaults to 1000.
+    #         enable_tqdm (bool, optional): _description_. Defaults to False.
+    #         return_features (bool, optional): _description_. Defaults to False.
 
-        Returns:
-            _type_: _description_
-        """
-        assert self.is_model_compiled, "Model must be compiled before fitting"
-        iter_range = range(n_iters) if not enable_tqdm else tqdm(range(n_iters))
-        for _iter in iter_range:
+    #     Returns:
+    #         _type_: _description_
+    #     """
+    #     assert self.is_model_compiled, "Model must be compiled before fitting"
+    #     iter_range = range(n_iters) if not enable_tqdm else tqdm(range(n_iters))
+    #     for _iter in iter_range:
 
-            self.optimizer.zero_grad()
-            output_quantities = self(input, return_features=return_features)
-            if return_features:
-                output = output_quantities['output']
-                features = output_quantities['features']
-            else:
-                output = output_quantities['output']
+    #         self.optimizer.zero_grad()
+    #         output_quantities = self(input, return_features=return_features)
+    #         if return_features:
+    #             output = output_quantities['output']
+    #             features = output_quantities['features']
+    #         else:
+    #             output = output_quantities['output']
 
-            loss = self.loss_function(output_quantities, signal) # changed this line from output to output_quantities
-            loss.backward()
-            self.optimizer.step()
+    #         loss = self.loss_function(output_quantities, signal) # changed this line from output to output_quantities
+    #         loss.backward()
+    #         self.optimizer.step()
 
-            if self.scheduler is not None:
-                self.scheduler.step()
+    #         if self.scheduler is not None:
+    #             self.scheduler.step()
             
-            loss_val = float(loss.item())
-            if enable_tqdm:
-                iter_range.set_description(f"Epoch: {_iter}/{n_iters}. Loss: {loss_val:.6f}")
-        ret_dict = {'output': output,  'metrics': self.metrics}
-        if return_features:
-            ret_dict.update({'features': features})
+    #         loss_val = float(loss.item())
+    #         if enable_tqdm:
+    #             iter_range.set_description(f"Epoch: {_iter}/{n_iters}. Loss: {loss_val:.6f}")
+    #     ret_dict = {'output': output,  'metrics': self.metrics}
+    #     if return_features:
+    #         ret_dict.update({'features': features})
 
-        return ret_dict
+    #     return ret_dict
     
     def fit_signal(self, input, signal, n_iters=1000, enable_tqdm=False, return_features=False, metrics: list[torchmetrics.Metric]=None, out_shape=None, permute_output_after_reshape=None):
         """Fit the model to the signal.

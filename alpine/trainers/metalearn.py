@@ -29,8 +29,6 @@ class MAMLMetaLearner():
     def configure_optimizers(self ):
         if self.outer_optimizer == 'adam':
             self.opt_thetas = torch.optim.Adam(self.model_params.values(), lr=self.config.get("outer_lr", 1e-4))
-            # self.opt_thetas = torch.optim.Adam([{"params":[v for k,v in self.model_params.items() if 'segmentation' in k], 'lr':1e-3}, 
-                                            #    {"params":[v for k,v in self.model_params.items() if 'inr' in k],'lr':1e-4}])
         else:
             self.opt_thetas = torch.optim.SGD(self.model_params.values(), lr=self.config.get("outer_lr", 1e-2))
 

@@ -8,7 +8,7 @@ build-backend = "setuptools.build_meta"
 name = "alpine"
 version = "1.0.0"
 description = "A pytorch library for implicit neural representations"
-authors = [{ name = "Kushal Vyas", email="" }, {name="Vishwanath Saragadam", email=""}, {name="Ashok Veeraragavan", email=""}, {name="Guha Balakrishnan", email=""}]
+authors = [{ name = "Kushal Vyas", email="kushalkvyas@gmail.com" }]
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.8"
@@ -19,8 +19,10 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/kushalvyas/alpine"
-Documentation = ""
 
 
 [tool.setuptools.packages.find]
-where = ["alpine"]  
+where = ["./alpine/"]  
+
+[tool.setuptools]
+package-dir = {"" = "./alpine"}
