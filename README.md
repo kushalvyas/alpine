@@ -44,3 +44,7 @@ If you find Alpine useful, please consider citing us!
         year={2025},
         url={https://github.com/kushalvyas/alpine}
     }
+
+
+### Logo credits:
+Logo designed by Isha Chakraborty.

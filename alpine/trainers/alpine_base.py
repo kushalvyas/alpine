@@ -1,0 +1,200 @@
+import torch
+import torch.nn as nn
+from ..utils.checkers import (check_opt_types, check_sch_types, check_lossfn_types)
+from ..utils.checkers import wrap_signal_instance
+from tqdm.autonotebook import tqdm
+from typing import overload
+from ..losses import MSELoss
+
+class AlpineBaseModule(nn.Module):
+    def __init__(self, ):
+        """_summary_
+        """
+        super(AlpineBaseModule, self).__init__()
+        self.optimizer = None
+        self.scheduler = None
+        self.loss_function = MSELoss()
+        self.is_model_compiled = False
+
+
+    # avoid decorators for abstractmethods to allow for simpler debugging traces
+    def forward(self, *args, **kwargs):
+        """Forward pass.
+
+        Raises:
+            NotImplementedError: Please implement the forward method in your subclass.
+        """
+        raise NotImplementedError("Please implement the forward method in your subclass.")
+    
+    def forward_w_features(self, *args, **kwargs):
+        """Forward pass with features.
+
+        Raises:
+            NotImplementedError: Please implement the forward method in your subclass.
+        """
+        raise NotImplementedError("Please implement the forward_w_features method in your subclass.")
+    
+    def compile(self, optimizer_name="adam", learning_rate=1e-4, scheduler=None):
+        """Setup optimizers.
+
+        Args:
+            optimizer_name (str, optional): Optimizer name. Defaults to "adam".
+            learning_rate (float, optional): Learning rate. Defaults to 1e-4.
+            scheduler (_type_, optional): Scheduler. Defaults to None.
+        """
+        check_opt_types(optimizer_name)
+        check_sch_types(scheduler)
+
+
+        if optimizer_name == "adam":
+            self.optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate)
+        elif optimizer_name == "sgd":
+            self.optimizer = torch.optim.SGD(self.parameters(), lr=learning_rate)
+        else:
+            raise ValueError("Optimizer not supported")
+
+        if scheduler is not None:
+            self.scheduler = scheduler(optimizer=self.optimizer)
+        else:   
+            self.scheduler = None
+
+        self.is_model_compiled = True
+
+    
+    def register_loss_function(self, loss_function : callable):
+        """Registers a loss function to the model. Default loss function for fitting the signal is mean square error.
+
+        Args:
+            loss_function (callable): A PyTorch `nn.Module` class object or a callable function that takes in two arguments: model's output dictionary and the ground truth data signal or dictionary.
+        """
+        check_lossfn_types(loss_function)
+        
+        self.loss_function = loss_function
+
+    def fit_signal(self, 
+                   input : torch.Tensor,
+                   signal : torch.Tensor,
+                   n_iters : int = 1000,
+                   enable_tqdm : bool = False,
+                   return_features : bool = False,
+                   track_loss_histroy : bool = False,
+                   kwargs : dict = {},
+                   
+                   ) -> dict:
+        
+        """
+        Simple fitting of the signal to the INR model
+
+        Args:
+            input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
+            signal (torch.Tensor): _description_
+            n_iters (int, optional): _description_. Defaults to 1000.
+            enable_tqdm (bool, optional): _description_. Defaults to False.
+            return_features (bool, optional): _description_. Defaults to False.
+            **kwargs: Other keyword arguments that is a dict of dicts. 
+        """
+        signal = wrap_signal_instance(signal) # triggers if signal is a torch.Tensor. Alpine's workflow is with dict-based and not tensor based.
+        loss_history = []
+
+        iter_pbar = range(n_iters) if not enable_tqdm else tqdm(range(n_iters), **kwargs.get("tqdm_kwargs", {}))
+        for iteration in iter_pbar:
+            self.optimizer.zero_grad()
+            output_packet = self(input, return_features=return_features) # forward pass returns a dict. 
+            loss = self.loss_function(output_packet, signal) # loss function takes in the output packet and the signal.
+
+            loss.backward() # backward pass
+            if track_loss_histroy:
+                loss_history.append(float(loss.item())) 
+            
+            self.optimizer.step()
+            if self.scheduler is not None:
+                self.scheduler.step()
+            
+            if enable_tqdm:
+                iter_pbar.set_description(f"Iteration {iteration}/{n_iters}.  Loss: {loss.item():.6f}")
+            
+        
+        # retvals = dict(loss=float(loss.item()), output = output_packet)
+        retvals = output_packet
+        retvals.update(dict(loss=float(loss.item())))
+        if track_loss_histroy:
+            retvals.update(dict(loss_history = loss_history))
+        
+        
+        return retvals
+    
+    def fit_signal2(self, 
+                   input : torch.Tensor,
+                   signal : torch.Tensor,
+                   n_iters : int = 1000,
+                   closure: callable = None,
+                   enable_tqdm : bool = False,
+                   return_features : bool = False,
+                   track_loss_histroy : bool = False,
+                   metric_trackers : dict = None,
+                   kwargs : dict = {},
+                   
+                   ) -> dict:
+        
+        """
+        Simple fitting of the signal to the INR model
+
+        Args:
+            input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
+            signal (torch.Tensor): _description_
+            n_iters (int, optional): _description_. Defaults to 1000.
+            enable_tqdm (bool, optional): _description_. Defaults to False.
+            return_features (bool, optional): _description_. Defaults to False.
+            **kwargs: Other keyword arguments that is a dict of dicts. 
+        """
+        signal = wrap_signal_instance(signal) # triggers if signal is a torch.Tensor. Alpine's workflow is with dict-based and not tensor based.
+        loss_history = []
+
+        if metric_trackers is not None and kwargs.get("metrics",{}).get("reset", True):
+            for _, metric_tracker in metric_trackers.items():
+                metric_tracker.increment()
+        
+        iter_pbar = range(n_iters) if not enable_tqdm else tqdm(range(n_iters), **kwargs.get("tqdm_kwargs", {}))
+        for iteration in iter_pbar:
+            self.optimizer.zero_grad()
+            if closure is None:
+                output_packet = self(input, return_features=return_features) # forward pass returns a dict. 
+            else:
+                output_packet = closure(self, input, signal, iteration)
+            
+            loss = self.loss_function(output_packet, signal) # loss function takes in the output packet and the signal.
+
+            loss.backward() # backward pass
+            if track_loss_histroy:
+                loss_history.append(float(loss.item())) 
+            
+            self.optimizer.step()
+            if self.scheduler is not None:
+                self.scheduler.step()
+            
+            if enable_tqdm:
+                iter_pbar.set_description(f"Iteration {iteration}/{n_iters}.  Loss: {loss.item():.6f}")
+
+            if metric_trackers is not None and len(metric_trackers) > 0:
+                for _, metric_tracker in metric_trackers.items():
+                    metric_tracker.increment()
+                    metric_tracker.update(output_packet['output'], signal['signal'])
+            
+        
+        # retvals = dict(loss=float(loss.item()), output = output_packet)
+        retvals = output_packet
+        retvals.update(dict(loss=float(loss.item())))
+        if track_loss_histroy:
+            retvals.update(dict(loss_history = loss_history))
+        
+        if metric_trackers is  not None and len(metric_trackers) > 0:
+            metrics_dict = {}
+            for metric_name, metric_tracker in metric_trackers.items():
+                computed_metrics = metric_tracker.compute_all().detach().cpu()
+                metrics_dict.update({metric_name: computed_metrics})
+            
+            retvals.update(dict(metrics = metrics_dict, metric_trackers = metric_trackers))
+        
+        return retvals
+    
+   
