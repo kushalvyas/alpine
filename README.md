@@ -1,7 +1,7 @@
 ## Alpine - A PyTorch Library for Implicit Neural Representations
 
 
-![alpine_logo](./assets/alpine_logo_final.png)
+![alpine_logo](./assets/alpine_logo.png)
 
 
 Welcome to Alpine! We provide an easy and extensible way to rapidly prototype implicit neural representations or neural fields (INRs) in PyTorch. Alpine offers modular and object-oriented interfaces allowing you to get started with INRs from the get go. We provide clean interfaces minimizing overhead and boilerplate code. 
