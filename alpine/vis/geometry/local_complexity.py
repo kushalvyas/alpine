@@ -55,6 +55,8 @@ def get_intersection_from_activation_batched(act : torch.Tensor,batch_size : int
     Out:
     Number of intersections with hull and percentage of layer hyperplanes intersecting
     """
+    if act.dtype == torch.cfloat:
+        act = act.real
     act = torch.sign(act).reshape(batch_size,act.shape[0]//batch_size,-1) ## get activation pattern
     match = act[:,1:,...] != act[:,:1,...] ## check if activation pattern identical across samples
     match = torch.any(match,dim=1)
