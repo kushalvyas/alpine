@@ -7,7 +7,7 @@ from typing import overload
 from ..losses import MSELoss
 
 class AlpineBaseModule(nn.Module):
-    def __init__(self, ):
+    def __init__(self):
         """_summary_
         """
         super(AlpineBaseModule, self).__init__()
@@ -147,6 +147,9 @@ class AlpineBaseModule(nn.Module):
             return_features (bool, optional): _description_. Defaults to False.
             **kwargs: Other keyword arguments that is a dict of dicts. 
         """
+        if not self.is_model_compiled:
+            self.compile()
+        
         signal = wrap_signal_instance(signal) # triggers if signal is a torch.Tensor. Alpine's workflow is with dict-based and not tensor based.
         loss_history = []
 

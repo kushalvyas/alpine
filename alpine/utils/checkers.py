@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from functools import partial
 
 def check_opt_types(x):
     """
@@ -17,13 +18,13 @@ def check_opt_types(x):
 
 def check_sch_types(x):
     """
-    Check if the optimizer name is a string or a callable. If it is a string, check if it is in the list of supported optimizers.
+    Check if the scheduler is of the right type.
     Args:
-        x (callable): learning rate scheduler, must be a torch.optim object.
+        x (callable): learning rate scheduler, must be a torch.optim.lr_scheduler or `partial` object.
     """
     if x is not None:
-        if not (callable(x) and isinstance(x, torch.optim)):
-            raise ValueError("Optimizer must be a string or a callable.")
+        if not isinstance(x, (partial, torch.optim.lr_scheduler._LRScheduler)):
+            raise ValueError("Scheduler must be a partial object or a torch.optim.lr_scheduler object.")
         
 
 def check_lossfn_types(loss_function):

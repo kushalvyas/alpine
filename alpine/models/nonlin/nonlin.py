@@ -29,14 +29,15 @@ class Gauss(nn.Module):
         return torch.exp(-(self.scale * x)**2)
 
 
-class Wire(nn.Module):
-    def __init__(self, scale=1.0, omega=30.0):
-        super().__init__()
-        self.scale = scale
-        self.omega = omega
+class Wavelet(nn.Module):
+    def __init__(self, sigma=1.0, omega=30.0, trainable=False, name="Wavelet"):
+        super(Wavelet, self).__init__()
+        self.name = name
+        self.sigma = nn.Parameter(sigma * torch.ones(1), requires_grad=trainable)
+        self.omega = nn.Parameter(omega * torch.ones(1), requires_grad=trainable)
     
     def forward(self, x):
-        return torch.exp( -1 * (self.scale * x)**2 + 1j * (self.omega * x) )
+        return torch.exp(1j * (self.omega * x)  - (self.sigma * x).abs().square())
 
 
 class HOSC(nn.Module):
