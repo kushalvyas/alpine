@@ -89,7 +89,7 @@ class Siren(AlpineBaseModule):
         output = coords.clone()
         for i,  layer in enumerate(self.model):
             output = layer(output)
-            if hasattr(layer, 'name') and layer.name == 'Sine':
+            if hasattr(layer, 'name') and layer.name == 'sine':
                 features.append(output.detach().clone())
         return {'output':output, 'features':features}
         

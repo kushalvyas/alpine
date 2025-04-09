@@ -97,7 +97,7 @@ class Wire(AlpineBaseModule):
         output = coords.clone()
         for i,  layer in enumerate(self.model):
             output = layer(output)
-            if hasattr(layer, 'name') and layer.name == 'Sine':
+            if hasattr(layer, 'name') and layer.name == 'wavelet':
                 features.append(output.detach().clone())
         
         output = output.real
