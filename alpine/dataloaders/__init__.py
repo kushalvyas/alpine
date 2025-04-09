@@ -1,2 +1,2 @@
 from .coordinate_datasets import (CoordinateDataset, BatchedCoordinateDataset)
-from .signal_dataloaders import (ImageLoader)
+from .signal_dataloaders import (BatchedNDSignalLoader, NDSignalLoader)
