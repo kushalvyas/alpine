@@ -3,8 +3,9 @@ import torch.nn as nn
 from ..utils.checkers import (check_opt_types, check_sch_types, check_lossfn_types)
 from ..utils.checkers import wrap_signal_instance
 from tqdm.autonotebook import tqdm
-from typing import overload
 from ..losses import MSELoss
+from collections import OrderedDict
+from typing import Union
 
 class AlpineBaseModule(nn.Module):
     def __init__(self):
@@ -124,28 +125,91 @@ class AlpineBaseModule(nn.Module):
     #     return retvals
     
     def fit_signal(self, 
-                   input : torch.Tensor,
-                   signal : torch.Tensor,
+                   *,
+                   input : torch.Tensor = None,
+                   signal : Union[torch.Tensor, dict] = None,
+                   dataloader: torch.utils.data.DataLoader = None,
                    n_iters : int = 1000,
                    closure: callable = None,
-                   enable_tqdm : bool = False,
+                   enable_tqdm : bool = True,
                    return_features : bool = False,
-                   track_loss_histroy : bool = False,
+                   track_loss_history : bool = False,
+                   metric_trackers : dict = None,
+                   kwargs : dict = {},
+                   ) -> dict:
+        """Final 
+
+        Args:
+            input (torch.Tensor, optional): _description_. Defaults to None.
+            signal (Union[torch.Tensor, dict], optional): _description_. Defaults to None.
+            dataloader (torch.utils.data.DataLoader, optional): _description_. Defaults to None.
+            n_iters (int, optional): _description_. Defaults to 1000.
+            closure (callable, optional): _description_. Defaults to None.
+            enable_tqdm (bool, optional): _description_. Defaults to True.
+            return_features (bool, optional): _description_. Defaults to False.
+            track_loss_history (bool, optional): _description_. Defaults to False.
+            metric_trackers (dict, optional): _description_. Defaults to None.
+            kwargs (dict, optional): _description_. Defaults to {}.
+
+        Returns:
+            dict: _description_
+        """
+        if dataloader is not None and (input is not None or signal is not None):
+            raise ValueError("Either dataloader or input and signal pair must be provided, not all.")
+        if dataloader is None:
+            if input is None or signal is None:
+                raise ValueError("Either dataloader or input and signal pair must be provided.")
+            return self._fit_signal_tensor(
+                input = input,
+                signal = signal,
+                n_iters = n_iters,
+                closure = closure,
+                enable_tqdm = enable_tqdm,
+                return_features = return_features,
+                track_loss_history = track_loss_history,
+                metric_trackers = metric_trackers,
+                kwargs = kwargs,
+            )
+        else:
+            return self._fit_signal_dataloader(
+                dataloader = dataloader,
+                n_iters = n_iters,
+                closure = closure,
+                enable_tqdm = enable_tqdm,
+                return_features = return_features,
+                track_loss_history = track_loss_history,
+                metric_trackers = metric_trackers,
+                kwargs = kwargs,
+            )
+            
+
+    def _fit_signal_tensor(self, 
+                   input : torch.Tensor,
+                   signal : Union[torch.Tensor, dict],
+                   n_iters : int = 1000,
+                   closure: callable = None,
+                   enable_tqdm : bool = True,
+                   return_features : bool = False,
+                   track_loss_history : bool = False,
                    metric_trackers : dict = None,
                    kwargs : dict = {},
                    
                    ) -> dict:
-        
-        """
-        Simple fitting of the signal to the INR model
+        """Fitting function for INR. This function is subclassed by the INR class, and can be overridden by the user.
 
         Args:
             input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
-            signal (torch.Tensor): _description_
+            signal (torch.Tensor): Ground truth truth signal or dictionary.
             n_iters (int, optional): _description_. Defaults to 1000.
-            enable_tqdm (bool, optional): _description_. Defaults to False.
+            closure (callable, optional): _description_. Defaults to None.
+            enable_tqdm (bool, optional): _description_. Defaults to True.
             return_features (bool, optional): _description_. Defaults to False.
-            **kwargs: Other keyword arguments that is a dict of dicts. 
+            track_loss_history (bool, optional): _description_. Defaults to False.
+            metric_trackers (dict, optional): _description_. Defaults to None.
+            kwargs (dict, optional): Other keyword arguments that is a dict of dicts. Defaults to {}.
+        
+        Returns:
+            dict: Returns a dictionary containing the output from the INR, with features if return_features=True, loss, and other metrics if provided.
         """
         if not self.is_model_compiled:
             self.compile()
@@ -153,22 +217,18 @@ class AlpineBaseModule(nn.Module):
         signal = wrap_signal_instance(signal) # triggers if signal is a torch.Tensor. Alpine's workflow is with dict-based and not tensor based.
         loss_history = []
 
-        if metric_trackers is not None and kwargs.get("metrics",{}).get("reset", True):
-            for _, metric_tracker in metric_trackers.items():
-                metric_tracker.increment()
-        
         iter_pbar = range(n_iters) if not enable_tqdm else tqdm(range(n_iters), **kwargs.get("tqdm_kwargs", {}))
         for iteration in iter_pbar:
             self.optimizer.zero_grad()
             if closure is None:
                 output_packet = self(input, return_features=return_features) # forward pass returns a dict. 
             else:
-                output_packet = closure(self, input, signal, iteration)
+                output_packet = closure(self, input, signal=signal, iteration=iteration, return_features=return_features, **kwargs)
             
             loss = self.loss_function(output_packet, signal) # loss function takes in the output packet and the signal.
 
             loss.backward() # backward pass
-            if track_loss_histroy:
+            if track_loss_history:
                 loss_history.append(float(loss.item())) 
             
             self.optimizer.step()
@@ -187,7 +247,90 @@ class AlpineBaseModule(nn.Module):
         # retvals = dict(loss=float(loss.item()), output = output_packet)
         retvals = output_packet
         retvals.update(dict(loss=float(loss.item())))
-        if track_loss_histroy:
+        if track_loss_history:
+            retvals.update(dict(loss_history = loss_history))
+        
+        if metric_trackers is  not None and len(metric_trackers) > 0:
+            metrics_dict = {}
+            for metric_name, metric_tracker in metric_trackers.items():
+                computed_metrics = metric_tracker.compute_all().detach().cpu()
+                metrics_dict.update({metric_name: computed_metrics})
+            
+            retvals.update(dict(metrics = metrics_dict, metric_trackers = metric_trackers))
+        
+        return retvals
+
+    def _fit_signal_dataloader(self,
+                    dataloader : torch.utils.data.DataLoader,
+                    n_iters : int = 1000,
+                    closure: callable = None,
+                    enable_tqdm : bool = True,
+                    return_features : bool = False,
+                    track_loss_history : bool = False,
+                    metric_trackers : dict = None,
+                    kwargs : dict = {}, ):
+        """_summary_
+
+        Args:
+            dataloader (torch.utils.data.DataLoader): _description_
+            n_iters (int, optional): _description_. Defaults to 1000.
+            closure (callable, optional): _description_. Defaults to None.
+            enable_tqdm (bool, optional): _description_. Defaults to True.
+            return_features (bool, optional): _description_. Defaults to False.
+            track_loss_history (bool, optional): _description_. Defaults to False.
+            metric_trackers (dict, optional): _description_. Defaults to None.
+            kwargs (dict, optional): _description_. Defaults to {}.
+
+        Returns:
+            _type_: _description_
+        """
+    
+        if not self.is_model_compiled:
+            self.compile()
+        
+        _device = next(self.parameters()).device
+        loss_history = []
+
+        iter_pbar = range(n_iters) if not enable_tqdm else tqdm(range(n_iters), **kwargs.get("tqdm_kwargs", {}))
+        for iteration in iter_pbar:
+
+            loss_iteration = 0.0
+            for batch_idx, batch in enumerate(dataloader):
+                input = batch['input'].to(_device)
+                signal = wrap_signal_instance( batch['signal'].to(_device)) 
+
+                self.optimizer.zero_grad()
+                if closure is None:
+                    output_packet = self(input, return_features=return_features) # forward pass returns a dict. 
+                else:
+                    output_packet = closure(self, input, signal=signal, iteration=iteration, return_features=return_features, **kwargs)
+                
+                loss = self.loss_function(output_packet, signal) # loss function takes in the output packet and the signal.
+
+                loss.backward() # backward pass
+                loss_iteration += float(loss.item())
+            
+            loss_over_dl = loss_iteration/len(dataloader)
+            if track_loss_history:
+                loss_history.append(loss_over_dl) 
+            
+            self.optimizer.step()
+            if self.scheduler is not None:
+                self.scheduler.step()
+            
+            if enable_tqdm:
+                iter_pbar.set_description(f"Iteration {iteration}/{n_iters}.  Loss (over dataloader): {loss_over_dl:.6f}")
+
+            if metric_trackers is not None and len(metric_trackers) > 0:
+                for _, metric_tracker in metric_trackers.items():
+                    metric_tracker.increment()
+                    metric_tracker.update(output_packet['output'], signal['signal'])
+            
+        
+        # retvals = dict(loss=float(loss.item()), output = output_packet)
+        retvals = output_packet
+        retvals.update(dict(loss=float(loss.item())))
+        if track_loss_history:
             retvals.update(dict(loss_history = loss_history))
         
         if metric_trackers is  not None and len(metric_trackers) > 0:
@@ -200,4 +343,22 @@ class AlpineBaseModule(nn.Module):
         
         return retvals
     
-   
+    def render(self, input, closure=None, return_features=False):
+        """Renders the model output for the given input. This method is used for inference or evaluation.
+
+        Args:
+            input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
+            closure (_type_, optional): _description_. Defaults to None.
+            return_features (bool, optional): _description_. Defaults to False.
+
+        Returns:
+            _type_: _description_
+        """
+        # _weights = OrderedDict({k:v.clone().detach() for k,v in self.state_dict().items()})
+        # self.load_weights(_weights)
+        with torch.no_grad():
+            if closure is not None:
+                output_quantities = closure(self, input, return_features=return_features)
+            else:
+                output_quantities = self(input, return_features=return_features)
+            return output_quantities
