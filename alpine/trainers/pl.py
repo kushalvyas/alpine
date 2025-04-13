@@ -7,7 +7,7 @@ from ..utils import check_opt_types, check_sch_types
 
 
 class LightningTrainer(pl.LightningModule):
-    def __init__(self, model, dataloader = None, closure = None, return_features = False, log_results = False):
+    def __init__(self, model, dataloader = None, closure = None, return_features = False, log_results = False, is_distributed=False):
         """
         Lightning Trainer class for Alpine.
         """
@@ -23,7 +23,7 @@ class LightningTrainer(pl.LightningModule):
         self.return_features = return_features
         self.log_results = log_results
         self.test_outputs = []
-
+        self.is_distributed = is_distributed
         print(self.return_features, self.log_results)
 
     def train_dataloader(self):
@@ -71,7 +71,7 @@ class LightningTrainer(pl.LightningModule):
         
         # Loss calculation
         loss = self.loss_function(output_packet, signal)
-        self.log("train_loss", loss, prog_bar=True, on_epoch=True, on_step=True, logger=self.log_results)
+        self.log("train_loss", loss, prog_bar=True, on_epoch=True, on_step=True, logger=self.log_results, sync_dist=self.is_distributed)
         return loss
 
     

@@ -1,6 +1,7 @@
 from .coords import *
 from .functional import *
 from .checkers import *
+from . import volutils
 
 def normalize(x, mode='minmax'):
     if mode == 'minmax':
