@@ -38,3 +38,10 @@ def check_lossfn_types(loss_function):
 def wrap_signal_instance(x):
     if isinstance(x, torch.Tensor):
         return {'signal' : x}
+    elif isinstance(x, dict):
+        if 'signal' in x:
+            return x
+        else:
+            raise ValueError("Dictionary must contain a key 'signal'.")
+    else:
+        raise ValueError("Input must be a torch.Tensor or a dictionary containing a key 'signal'.")

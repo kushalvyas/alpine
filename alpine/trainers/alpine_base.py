@@ -6,6 +6,7 @@ from tqdm.autonotebook import tqdm
 from ..losses import MSELoss
 from collections import OrderedDict
 from typing import Union
+import math
 
 class AlpineBaseModule(nn.Module):
     def __init__(self):
@@ -16,6 +17,8 @@ class AlpineBaseModule(nn.Module):
         self.scheduler = None
         self.loss_function = MSELoss()
         self.is_model_compiled = False
+        self.best_weights = None
+        self.best_loss = math.inf
 
 
     # avoid decorators for abstractmethods to allow for simpler debugging traces
@@ -135,6 +138,7 @@ class AlpineBaseModule(nn.Module):
                    return_features : bool = False,
                    track_loss_history : bool = False,
                    metric_trackers : dict = None,
+                   save_best_weights : bool = False,
                    kwargs : dict = {},
                    ) -> dict:
         """Final 
@@ -149,6 +153,7 @@ class AlpineBaseModule(nn.Module):
             return_features (bool, optional): _description_. Defaults to False.
             track_loss_history (bool, optional): _description_. Defaults to False.
             metric_trackers (dict, optional): _description_. Defaults to None.
+            save_best_weights (bool, optional): _description_. Defaults to False.
             kwargs (dict, optional): _description_. Defaults to {}.
 
         Returns:
@@ -168,6 +173,7 @@ class AlpineBaseModule(nn.Module):
                 return_features = return_features,
                 track_loss_history = track_loss_history,
                 metric_trackers = metric_trackers,
+                save_best_weights = save_best_weights,
                 kwargs = kwargs,
             )
         else:
@@ -179,6 +185,7 @@ class AlpineBaseModule(nn.Module):
                 return_features = return_features,
                 track_loss_history = track_loss_history,
                 metric_trackers = metric_trackers,
+                save_best_weightsl = save_best_weights,
                 kwargs = kwargs,
             )
             
@@ -192,6 +199,7 @@ class AlpineBaseModule(nn.Module):
                    return_features : bool = False,
                    track_loss_history : bool = False,
                    metric_trackers : dict = None,
+                   save_best_weights : bool = False,
                    kwargs : dict = {},
                    
                    ) -> dict:
@@ -206,6 +214,7 @@ class AlpineBaseModule(nn.Module):
             return_features (bool, optional): _description_. Defaults to False.
             track_loss_history (bool, optional): _description_. Defaults to False.
             metric_trackers (dict, optional): _description_. Defaults to None.
+            save_best_weights (bool, optional): _description_. Defaults to False.
             kwargs (dict, optional): Other keyword arguments that is a dict of dicts. Defaults to {}.
         
         Returns:
@@ -236,7 +245,13 @@ class AlpineBaseModule(nn.Module):
                 self.scheduler.step()
             
             if enable_tqdm:
-                iter_pbar.set_description(f"Iteration {iteration}/{n_iters}.  Loss: {loss.item():.6f}")
+                best_loss_str = f"Best Loss: {self.best_loss:.6f}" if self.best_loss < math.inf else ""
+                iter_pbar.set_description(f"Iteration {iteration}/{n_iters}.  Loss: {loss.item():.6f}. {best_loss_str}")
+                iter_pbar.refresh()
+
+            if save_best_weights and (float(loss.item()) < self.best_loss):
+                self.best_loss = float(loss.item())
+                self.best_weights = OrderedDict({k:v.clone().detach() for k,v in self.state_dict().items()})
 
             if metric_trackers is not None and len(metric_trackers) > 0:
                 for _, metric_tracker in metric_trackers.items():
@@ -268,6 +283,7 @@ class AlpineBaseModule(nn.Module):
                     return_features : bool = False,
                     track_loss_history : bool = False,
                     metric_trackers : dict = None,
+                    save_best_weights : bool = False,
                     kwargs : dict = {}, ):
         """_summary_
 
@@ -279,6 +295,7 @@ class AlpineBaseModule(nn.Module):
             return_features (bool, optional): _description_. Defaults to False.
             track_loss_history (bool, optional): _description_. Defaults to False.
             metric_trackers (dict, optional): _description_. Defaults to None.
+            save_best_weights (bool, optional): _description_. Defaults to False.
             kwargs (dict, optional): _description_. Defaults to {}.
 
         Returns:
@@ -343,19 +360,23 @@ class AlpineBaseModule(nn.Module):
         
         return retvals
     
-    def render(self, input, closure=None, return_features=False):
+    def render(self, input, closure=None, return_features=False, use_best_weights=False):
         """Renders the model output for the given input. This method is used for inference or evaluation.
 
         Args:
             input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
             closure (_type_, optional): _description_. Defaults to None.
             return_features (bool, optional): _description_. Defaults to False.
+            use_best_weights (bool, optional): _description_. Defaults to False.
 
         Returns:
             _type_: _description_
         """
         # _weights = OrderedDict({k:v.clone().detach() for k,v in self.state_dict().items()})
         # self.load_weights(_weights)
+        if use_best_weights and self.best_weights is not None:
+            self.load_state_dict(self.best_weights)
+
         with torch.no_grad():
             if closure is not None:
                 output_quantities = closure(self, input, return_features=return_features)

@@ -16,6 +16,8 @@ class BaseINR(nn.Module):
         self.loss_function = torch.nn.functional.mse_loss
 
         self.is_model_compiled=False
+        self.best_weights = None
+        self.best_loss = 1e10
     
     def forward(self, *args, **kwargs):
         raise NotImplementedError
@@ -80,12 +82,13 @@ class BaseINR(nn.Module):
 
     #     return ret_dict
     
-    def fit_signal(self, input, signal, n_iters=1000, enable_tqdm=False, return_features=False, metrics: list[torchmetrics.Metric]=None, out_shape=None, permute_output_after_reshape=None):
+    def fit_signal(self, input, signal, n_iters=1000, enable_tqdm=False, return_features=False, metrics: list[torchmetrics.Metric]=None, out_shape=None, permute_output_after_reshape=None, save_best=False):
         """Fit the model to the signal.
         """
         assert self.is_model_compiled, "Model must be compiled before fitting"
         iter_range = range(n_iters) if not enable_tqdm else tqdm(range(n_iters))
         self.metrics = metrics
+
         for _iter in iter_range:
 
             self.optimizer.zero_grad()
@@ -105,6 +108,11 @@ class BaseINR(nn.Module):
                 self.scheduler.step()
             
             loss_val = float(loss.item())
+            if save_best and (loss_val < self.best_loss):
+                self.best_loss = loss_val
+                self.best_weights = OrderedDict({k:v.clone().detach() for k,v in self.state_dict().items()})
+
+
             if enable_tqdm:
                 iter_range.set_description(f"Epoch: {_iter}/{n_iters}. Loss: {loss_val:.6f}")
 
@@ -124,13 +132,20 @@ class BaseINR(nn.Module):
         ret_dict = {'output': output,  'metrics': self.metrics}
         if return_features:
             ret_dict.update({'features': features})
+        if save_best:
+            ret_dict.update({'best_weights': self.best_weights})
         return ret_dict
             
-    def render(self, input, return_features=False):
+    def render(self, input, return_features=False, use_best_weights=False):
         """Predict the signal.
         """
         
-        _weights = OrderedDict({k:v.clone().detach() for k,v in self.state_dict().items()})
+        if use_best_weights:
+            assert self.best_weights is not None, "best_weights are not logged. Please fit signal with best_weights=True "
+            _weights = self.best_weights
+        else:
+            _weights = OrderedDict({k:v.clone().detach() for k,v in self.state_dict().items()})
+        
         self.load_weights(_weights)
 
         output_quantities = self(input, return_features=return_features)
