@@ -185,7 +185,7 @@ class AlpineBaseModule(nn.Module):
                 return_features = return_features,
                 track_loss_history = track_loss_history,
                 metric_trackers = metric_trackers,
-                save_best_weightsl = save_best_weights,
+                save_best_weights = save_best_weights,
                 kwargs = kwargs,
             )
             
