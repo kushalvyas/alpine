@@ -1,0 +1,1020 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; Alpine 1.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=8d563738"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Alpine 1.0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="modules.html">
+    alpine
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="modules.html">
+    alpine
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    alpine.dataloaders
+
+      <ul>
+        <li><a href="alpine.dataloaders.html#module-alpine.dataloaders">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.dataloaders.coordinate_datasets
+
+      <ul>
+        <li><a href="alpine.dataloaders.html#module-alpine.dataloaders.coordinate_datasets">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.dataloaders.signal_dataloaders
+
+      <ul>
+        <li><a href="alpine.dataloaders.html#module-alpine.dataloaders.signal_dataloaders">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.losses
+
+      <ul>
+        <li><a href="alpine.losses.html#module-alpine.losses">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.losses.loss_functions
+
+      <ul>
+        <li><a href="alpine.losses.html#module-alpine.losses.loss_functions">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.models
+
+      <ul>
+        <li><a href="alpine.models.html#module-alpine.models">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.models.ffn
+
+      <ul>
+        <li><a href="alpine.models.html#module-alpine.models.ffn">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.models.hashgrids
+
+      <ul>
+        <li><a href="alpine.models.html#module-alpine.models.hashgrids">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.models.nonlin
+
+      <ul>
+        <li><a href="alpine.models.nonlin.html#module-alpine.models.nonlin">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.models.nonlin.nonlin
+
+      <ul>
+        <li><a href="alpine.models.nonlin.html#module-alpine.models.nonlin.nonlin">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.models.siren
+
+      <ul>
+        <li><a href="alpine.models.html#module-alpine.models.siren">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.models.strainer
+
+      <ul>
+        <li><a href="alpine.models.html#module-alpine.models.strainer">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.models.utils
+
+      <ul>
+        <li><a href="alpine.models.html#module-alpine.models.utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.models.wire
+
+      <ul>
+        <li><a href="alpine.models.html#module-alpine.models.wire">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.trainers
+
+      <ul>
+        <li><a href="alpine.trainers.html#module-alpine.trainers">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    alpine.trainers.alpine_base
+
+      <ul>
+        <li><a href="alpine.trainers.html#module-alpine.trainers.alpine_base">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.trainers.base
+
+      <ul>
+        <li><a href="alpine.trainers.html#module-alpine.trainers.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.trainers.metalearn
+
+      <ul>
+        <li><a href="alpine.trainers.html#module-alpine.trainers.metalearn">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.trainers.pl
+
+      <ul>
+        <li><a href="alpine.trainers.html#module-alpine.trainers.pl">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.utils
+
+      <ul>
+        <li><a href="alpine.utils.html#module-alpine.utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.utils.checkers
+
+      <ul>
+        <li><a href="alpine.utils.html#module-alpine.utils.checkers">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.utils.coords
+
+      <ul>
+        <li><a href="alpine.utils.html#module-alpine.utils.coords">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.utils.functional
+
+      <ul>
+        <li><a href="alpine.utils.html#module-alpine.utils.functional">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.utils.volutils
+
+      <ul>
+        <li><a href="alpine.utils.html#module-alpine.utils.volutils">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.vis
+
+      <ul>
+        <li><a href="alpine.vis.html#module-alpine.vis">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.vis.geometry
+
+      <ul>
+        <li><a href="alpine.vis.geometry.html#module-alpine.vis.geometry">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.vis.geometry.local_complexity
+
+      <ul>
+        <li><a href="alpine.vis.geometry.html#module-alpine.vis.geometry.local_complexity">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.vis.geometry.partitions
+
+      <ul>
+        <li><a href="alpine.vis.geometry.html#module-alpine.vis.geometry.partitions">module</a>
+</li>
+      </ul></li>
+      <li>
+    alpine.vis.pca
+
+      <ul>
+        <li><a href="alpine.vis.html#module-alpine.vis.pca">module</a>
+</li>
+      </ul></li>
+      <li><a href="alpine.trainers.html#alpine.trainers.alpine_base.AlpineBaseModule">AlpineBaseModule (class in alpine.trainers.alpine_base)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.base.BaseINR">BaseINR (class in alpine.trainers.base)</a>
+</li>
+      <li><a href="alpine.dataloaders.html#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset">BatchedCoordinateDataset (class in alpine.dataloaders.coordinate_datasets)</a>
+</li>
+      <li><a href="alpine.dataloaders.html#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader">BatchedNDSignalLoader (class in alpine.dataloaders.signal_dataloaders)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.dataloaders.html#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.build_coordinate_tensors">build_coordinate_tensors() (alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset method)</a>
+
+      <ul>
+        <li><a href="alpine.dataloaders.html#alpine.dataloaders.coordinate_datasets.CoordinateDataset.build_coordinate_tensors">(alpine.dataloaders.coordinate_datasets.CoordinateDataset method)</a>
+</li>
+        <li><a href="alpine.dataloaders.html#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.build_coordinate_tensors">(alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader method)</a>
+</li>
+        <li><a href="alpine.dataloaders.html#alpine.dataloaders.signal_dataloaders.NDSignalLoader.build_coordinate_tensors">(alpine.dataloaders.signal_dataloaders.NDSignalLoader method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.utils.html#alpine.utils.checkers.check_lossfn_types">check_lossfn_types() (in module alpine.utils.checkers)</a>
+</li>
+      <li><a href="alpine.utils.html#alpine.utils.checkers.check_opt_types">check_opt_types() (in module alpine.utils.checkers)</a>
+</li>
+      <li><a href="alpine.utils.html#alpine.utils.checkers.check_sch_types">check_sch_types() (in module alpine.utils.checkers)</a>
+</li>
+      <li><a href="alpine.vis.html#alpine.vis.pca.check_tensor_dtype">check_tensor_dtype() (in module alpine.vis.pca)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.alpine_base.AlpineBaseModule.compile">compile() (alpine.trainers.alpine_base.AlpineBaseModule method)</a>
+
+      <ul>
+        <li><a href="alpine.trainers.html#alpine.trainers.base.BaseINR.compile">(alpine.trainers.base.BaseINR method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.vis.html#alpine.vis.pca.compute_pca_features">compute_pca_features() (in module alpine.vis.pca)</a>
+</li>
+      <li><a href="alpine.vis.html#alpine.vis.pca.compute_pca_features_batch">compute_pca_features_batch() (in module alpine.vis.pca)</a>
+</li>
+      <li><a href="alpine.vis.html#alpine.vis.pca.compute_pca_layerwise">compute_pca_layerwise() (in module alpine.vis.pca)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.configure_optimizers">configure_optimizers() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+
+      <ul>
+        <li><a href="alpine.trainers.html#alpine.trainers.pl.LightningTrainer.configure_optimizers">(alpine.trainers.pl.LightningTrainer method)</a>
+</li>
+      </ul></li>
+      <li><a href="alpine.dataloaders.html#alpine.dataloaders.coordinate_datasets.CoordinateDataset">CoordinateDataset (class in alpine.dataloaders.coordinate_datasets)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.partitions.partitions.device">device (alpine.vis.geometry.partitions.partitions attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.base.BaseINR.fetch_metrics">fetch_metrics() (alpine.trainers.base.BaseINR method)</a>
+</li>
+      <li><a href="alpine.models.html#alpine.models.ffn.FFN">FFN (class in alpine.models.ffn)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.alpine_base.AlpineBaseModule.fit_signal">fit_signal() (alpine.trainers.alpine_base.AlpineBaseModule method)</a>
+
+      <ul>
+        <li><a href="alpine.trainers.html#alpine.trainers.base.BaseINR.fit_signal">(alpine.trainers.base.BaseINR method)</a>
+</li>
+      </ul></li>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.local_complexity.flatten_model">flatten_model() (in module alpine.vis.geometry.local_complexity)</a>
+</li>
+      <li><a href="alpine.losses.html#alpine.losses.loss_functions.MSELoss.forward">forward() (alpine.losses.loss_functions.MSELoss method)</a>
+
+      <ul>
+        <li><a href="alpine.models.html#alpine.models.ffn.FFN.forward">(alpine.models.ffn.FFN method)</a>
+</li>
+        <li><a href="alpine.models.html#alpine.models.ffn.PosEncoding.forward">(alpine.models.ffn.PosEncoding method)</a>
+</li>
+        <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.Gauss.forward">(alpine.models.nonlin.nonlin.Gauss method)</a>
+</li>
+        <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.HOSC.forward">(alpine.models.nonlin.nonlin.HOSC method)</a>
+</li>
+        <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.ReLU.forward">(alpine.models.nonlin.nonlin.ReLU method)</a>
+</li>
+        <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.Sinc.forward">(alpine.models.nonlin.nonlin.Sinc method)</a>
+</li>
+        <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.Sine.forward">(alpine.models.nonlin.nonlin.Sine method)</a>
+</li>
+        <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.Wavelet.forward">(alpine.models.nonlin.nonlin.Wavelet method)</a>
+</li>
+        <li><a href="alpine.models.html#alpine.models.siren.Siren.forward">(alpine.models.siren.Siren method)</a>
+</li>
+        <li><a href="alpine.models.html#alpine.models.strainer.Strainer.forward">(alpine.models.strainer.Strainer method)</a>
+</li>
+        <li><a href="alpine.models.html#alpine.models.wire.Wire.forward">(alpine.models.wire.Wire method)</a>
+</li>
+        <li><a href="alpine.trainers.html#alpine.trainers.alpine_base.AlpineBaseModule.forward">(alpine.trainers.alpine_base.AlpineBaseModule method)</a>
+</li>
+        <li><a href="alpine.trainers.html#alpine.trainers.base.BaseINR.forward">(alpine.trainers.base.BaseINR method)</a>
+</li>
+        <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.forward">(alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.models.html#alpine.models.ffn.FFN.forward_w_features">forward_w_features() (alpine.models.ffn.FFN method)</a>
+
+      <ul>
+        <li><a href="alpine.models.html#alpine.models.siren.Siren.forward_w_features">(alpine.models.siren.Siren method)</a>
+</li>
+        <li><a href="alpine.models.html#alpine.models.strainer.Strainer.forward_w_features">(alpine.models.strainer.Strainer method)</a>
+</li>
+        <li><a href="alpine.models.html#alpine.models.wire.Wire.forward_w_features">(alpine.models.wire.Wire method)</a>
+</li>
+        <li><a href="alpine.trainers.html#alpine.trainers.alpine_base.AlpineBaseModule.forward_w_features">(alpine.trainers.alpine_base.AlpineBaseModule method)</a>
+</li>
+      </ul></li>
+      <li><a href="alpine.utils.html#alpine.utils.functional.functional_model_call">functional_model_call() (in module alpine.utils.functional)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.Gauss">Gauss (class in alpine.models.nonlin.nonlin)</a>
+</li>
+      <li><a href="alpine.utils.html#alpine.utils.coords.get_coords2d">get_coords2d() (in module alpine.utils.coords)</a>
+</li>
+      <li><a href="alpine.utils.html#alpine.utils.coords.get_coords3d">get_coords3d() (in module alpine.utils.coords)</a>
+</li>
+      <li><a href="alpine.utils.html#alpine.utils.coords.get_coords3d_INT">get_coords3d_INT() (in module alpine.utils.coords)</a>
+</li>
+      <li><a href="alpine.models.html#alpine.models.utils.get_coords_nd">get_coords_nd() (in module alpine.models.utils)</a>
+
+      <ul>
+        <li><a href="alpine.utils.html#alpine.utils.coords.get_coords_nd">(in module alpine.utils.coords)</a>
+</li>
+      </ul></li>
+      <li><a href="alpine.models.html#alpine.models.utils.get_coords_spatial">get_coords_spatial() (in module alpine.models.utils)</a>
+
+      <ul>
+        <li><a href="alpine.utils.html#alpine.utils.coords.get_coords_spatial">(in module alpine.utils.coords)</a>
+</li>
+      </ul></li>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.get_inr_parameters">get_inr_parameters() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.local_complexity.get_intersections_for_hulls">get_intersections_for_hulls() (in module alpine.vis.geometry.local_complexity)</a>
+</li>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.local_complexity.get_layer_intersections_batched">get_layer_intersections_batched() (in module alpine.vis.geometry.local_complexity)</a>
+</li>
+      <li><a href="alpine.models.html#alpine.models.siren.get_linear_layer">get_linear_layer() (in module alpine.models.siren)</a>
+
+      <ul>
+        <li><a href="alpine.models.html#alpine.models.strainer.get_linear_layer">(in module alpine.models.strainer)</a>
+</li>
+        <li><a href="alpine.models.html#alpine.models.wire.get_linear_layer">(in module alpine.models.wire)</a>
+</li>
+      </ul></li>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.local_complexity.get_ortho_hull_around_samples">get_ortho_hull_around_samples() (in module alpine.vis.geometry.local_complexity)</a>
+</li>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.local_complexity.get_ortho_hull_around_samples_w_orig">get_ortho_hull_around_samples_w_orig() (in module alpine.vis.geometry.local_complexity)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.get_parameters">get_parameters() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.partitions.partitions.get_partitions_from_inr">get_partitions_from_inr() (alpine.vis.geometry.partitions.partitions static method)</a>
+</li>
+      <li><a href="alpine.utils.html#alpine.utils.functional.get_stacked_weights_and_bias_from_statedicts">get_stacked_weights_and_bias_from_statedicts() (in module alpine.utils.functional)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.HOSC">HOSC (class in alpine.models.nonlin.nonlin)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.inner_loop">inner_loop() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.pl.LightningTrainer">LightningTrainer (class in alpine.trainers.pl)</a>
+</li>
+      <li><a href="alpine.models.html#alpine.models.strainer.Strainer.load_encoder_weights">load_encoder_weights() (alpine.models.strainer.Strainer method)</a>
+</li>
+      <li><a href="alpine.models.html#alpine.models.ffn.FFN.load_weights">load_weights() (alpine.models.ffn.FFN method)</a>
+
+      <ul>
+        <li><a href="alpine.models.html#alpine.models.siren.Siren.load_weights">(alpine.models.siren.Siren method)</a>
+</li>
+        <li><a href="alpine.models.html#alpine.models.strainer.Strainer.load_weights">(alpine.models.strainer.Strainer method)</a>
+</li>
+        <li><a href="alpine.models.html#alpine.models.wire.Wire.load_weights">(alpine.models.wire.Wire method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.loss_fn_mse">loss_fn_mse() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner">MAMLMetaLearner (class in alpine.trainers.metalearn)</a>
+</li>
+      <li><a href="alpine.utils.html#alpine.utils.volutils.march_and_save">march_and_save() (in module alpine.utils.volutils)</a>
+</li>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.partitions.partitions.model_flatten_func">model_flatten_func() (alpine.vis.geometry.partitions.partitions method)</a>
+</li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="alpine.dataloaders.html#module-alpine.dataloaders">alpine.dataloaders</a>
+</li>
+        <li><a href="alpine.dataloaders.html#module-alpine.dataloaders.coordinate_datasets">alpine.dataloaders.coordinate_datasets</a>
+</li>
+        <li><a href="alpine.dataloaders.html#module-alpine.dataloaders.signal_dataloaders">alpine.dataloaders.signal_dataloaders</a>
+</li>
+        <li><a href="alpine.losses.html#module-alpine.losses">alpine.losses</a>
+</li>
+        <li><a href="alpine.losses.html#module-alpine.losses.loss_functions">alpine.losses.loss_functions</a>
+</li>
+        <li><a href="alpine.models.html#module-alpine.models">alpine.models</a>
+</li>
+        <li><a href="alpine.models.html#module-alpine.models.ffn">alpine.models.ffn</a>
+</li>
+        <li><a href="alpine.models.html#module-alpine.models.hashgrids">alpine.models.hashgrids</a>
+</li>
+        <li><a href="alpine.models.nonlin.html#module-alpine.models.nonlin">alpine.models.nonlin</a>
+</li>
+        <li><a href="alpine.models.nonlin.html#module-alpine.models.nonlin.nonlin">alpine.models.nonlin.nonlin</a>
+</li>
+        <li><a href="alpine.models.html#module-alpine.models.siren">alpine.models.siren</a>
+</li>
+        <li><a href="alpine.models.html#module-alpine.models.strainer">alpine.models.strainer</a>
+</li>
+        <li><a href="alpine.models.html#module-alpine.models.utils">alpine.models.utils</a>
+</li>
+        <li><a href="alpine.models.html#module-alpine.models.wire">alpine.models.wire</a>
+</li>
+        <li><a href="alpine.trainers.html#module-alpine.trainers">alpine.trainers</a>
+</li>
+        <li><a href="alpine.trainers.html#module-alpine.trainers.alpine_base">alpine.trainers.alpine_base</a>
+</li>
+        <li><a href="alpine.trainers.html#module-alpine.trainers.base">alpine.trainers.base</a>
+</li>
+        <li><a href="alpine.trainers.html#module-alpine.trainers.metalearn">alpine.trainers.metalearn</a>
+</li>
+        <li><a href="alpine.trainers.html#module-alpine.trainers.pl">alpine.trainers.pl</a>
+</li>
+        <li><a href="alpine.utils.html#module-alpine.utils">alpine.utils</a>
+</li>
+        <li><a href="alpine.utils.html#module-alpine.utils.checkers">alpine.utils.checkers</a>
+</li>
+        <li><a href="alpine.utils.html#module-alpine.utils.coords">alpine.utils.coords</a>
+</li>
+        <li><a href="alpine.utils.html#module-alpine.utils.functional">alpine.utils.functional</a>
+</li>
+        <li><a href="alpine.utils.html#module-alpine.utils.volutils">alpine.utils.volutils</a>
+</li>
+        <li><a href="alpine.vis.html#module-alpine.vis">alpine.vis</a>
+</li>
+        <li><a href="alpine.vis.geometry.html#module-alpine.vis.geometry">alpine.vis.geometry</a>
+</li>
+        <li><a href="alpine.vis.geometry.html#module-alpine.vis.geometry.local_complexity">alpine.vis.geometry.local_complexity</a>
+</li>
+        <li><a href="alpine.vis.geometry.html#module-alpine.vis.geometry.partitions">alpine.vis.geometry.partitions</a>
+</li>
+        <li><a href="alpine.vis.html#module-alpine.vis.pca">alpine.vis.pca</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.mse_loss">mse_loss() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+      <li><a href="alpine.losses.html#alpine.losses.loss_functions.MSELoss">MSELoss (class in alpine.losses.loss_functions)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.partitions.partitions.n">n (alpine.vis.geometry.partitions.partitions attribute)</a>
+</li>
+      <li><a href="alpine.dataloaders.html#alpine.dataloaders.signal_dataloaders.NDSignalLoader">NDSignalLoader (class in alpine.dataloaders.signal_dataloaders)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.utils.html#alpine.utils.normalize">normalize() (in module alpine.utils)</a>
+</li>
+      <li><a href="alpine.vis.html#alpine.vis.pca.normalize_fn">normalize_fn() (in module alpine.vis.pca)</a>
+</li>
+      <li><a href="alpine.utils.html#alpine.utils.normalize_nd">normalize_nd() (in module alpine.utils)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.pl.LightningTrainer.on_test_end">on_test_end() (alpine.trainers.pl.LightningTrainer method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.pl.LightningTrainer.on_test_epoch_end">on_test_epoch_end() (alpine.trainers.pl.LightningTrainer method)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.outer_loop">outer_loop() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.partitions.partitions">partitions (class in alpine.vis.geometry.partitions)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.partitions.plot_partitions">plot_partitions() (in module alpine.vis.geometry.partitions)</a>
+</li>
+      <li><a href="alpine.models.html#alpine.models.ffn.PosEncoding">PosEncoding (class in alpine.models.ffn)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.partitions.partitions.r">r (alpine.vis.geometry.partitions.partitions attribute)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.alpine_base.AlpineBaseModule.register_loss_function">register_loss_function() (alpine.trainers.alpine_base.AlpineBaseModule method)</a>
+</li>
+      <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.ReLU">ReLU (class in alpine.models.nonlin.nonlin)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.alpine_base.AlpineBaseModule.render">render() (alpine.trainers.alpine_base.AlpineBaseModule method)</a>
+
+      <ul>
+        <li><a href="alpine.trainers.html#alpine.trainers.base.BaseINR.render">(alpine.trainers.base.BaseINR method)</a>
+</li>
+      </ul></li>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.render_inner_loop">render_inner_loop() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+      <li><a href="alpine.vis.html#alpine.vis.pca.return_as_torch">return_as_torch() (in module alpine.vis.pca)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.local_complexity.sample_ortho_random">sample_ortho_random() (in module alpine.vis.geometry.local_complexity)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.pl.LightningTrainer.set_closure">set_closure() (alpine.trainers.pl.LightningTrainer method)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.base.BaseINR.set_loss_function">set_loss_function() (alpine.trainers.base.BaseINR method)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.set_parameters">set_parameters() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+      <li><a href="alpine.dataloaders.html#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.setup_signal">setup_signal() (alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader method)</a>
+
+      <ul>
+        <li><a href="alpine.dataloaders.html#alpine.dataloaders.signal_dataloaders.NDSignalLoader.setup_signal">(alpine.dataloaders.signal_dataloaders.NDSignalLoader method)</a>
+</li>
+      </ul></li>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.partitions.partitions.show_partitions">show_partitions() (alpine.vis.geometry.partitions.partitions method)</a>
+
+      <ul>
+        <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.partitions.show_partitions">(in module alpine.vis.geometry.partitions)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.Sinc">Sinc (class in alpine.models.nonlin.nonlin)</a>
+</li>
+      <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.Sine">Sine (class in alpine.models.nonlin.nonlin)</a>
+</li>
+      <li><a href="alpine.models.html#alpine.models.siren.Siren">Siren (class in alpine.models.siren)</a>
+</li>
+      <li><a href="alpine.vis.geometry.html#alpine.vis.geometry.local_complexity.split_generator">split_generator() (in module alpine.vis.geometry.local_complexity)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.metalearn.MAMLMetaLearner.squeeze_output">squeeze_output() (alpine.trainers.metalearn.MAMLMetaLearner method)</a>
+</li>
+      <li><a href="alpine.models.html#alpine.models.strainer.Strainer">Strainer (class in alpine.models.strainer)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.pl.LightningTrainer.test_step">test_step() (alpine.trainers.pl.LightningTrainer method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.trainers.html#alpine.trainers.pl.LightningTrainer.train_dataloader">train_dataloader() (alpine.trainers.pl.LightningTrainer method)</a>
+</li>
+      <li><a href="alpine.trainers.html#alpine.trainers.pl.LightningTrainer.training_step">training_step() (alpine.trainers.pl.LightningTrainer method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.dataloaders.html#alpine.dataloaders.coordinate_datasets.unflat_index">unflat_index() (in module alpine.dataloaders.coordinate_datasets)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.models.nonlin.html#alpine.models.nonlin.nonlin.Wavelet">Wavelet (class in alpine.models.nonlin.nonlin)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="alpine.models.html#alpine.models.wire.Wire">Wire (class in alpine.models.wire)</a>
+</li>
+      <li><a href="alpine.utils.html#alpine.utils.checkers.wrap_signal_instance">wrap_signal_instance() (in module alpine.utils.checkers)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Kushal Vyas, Vishwanath Saragadam, Ashok Veeraraghavan, Guha Balakrishnan.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
