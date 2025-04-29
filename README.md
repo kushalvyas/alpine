@@ -6,7 +6,7 @@
 
 Welcome to Alpine! We provide an easy and extensible way to rapidly prototype implicit neural representations or neural fields (INRs) in PyTorch. Alpine offers modular and object-oriented interfaces allowing you to get started with INRs from the get go. We provide clean interfaces minimizing overhead and boilerplate code. 
 
-Alpine also offers a powerful visualization library that helps you take a peek under the hood. We provide interpretable visualizations such as PCA of learned features, gradient monitoring and histograms, . We also integrate the Implict Neural Canvas[cite] by Padmanabhan et.al.
+Alpine also offers a powerful visualization library that helps you take a peek under the hood. We provide interpretable visualizations such as PCA of learned features, gradient monitoring and histograms.
 
 > [!IMPORTANT]
 > Alpine is work in progress. We appreciate any constructive community feedback and support. We invite all the researchers across all disciplines to explore, and suggest any features you find particularly useful. Our goal is to make `Alpine` the go-to place for scientific computing using INRs!
@@ -19,6 +19,9 @@ Alpine also offers a powerful visualization library that helps you take a peek u
     cd alpine/
     pip install . # or pip install -e . (if you want to experiemnt or edit the library, this makes the codebase editable)
 
+
+## Contribution
+We'll have our contribution guidelines up soon. Meanwhile, please feel free to report issues or raise any PRs.
 
 ## Examples
 
@@ -45,7 +48,7 @@ If you find Alpine useful, please consider citing us!
         url={https://github.com/kushalvyas/alpine}
     }
 
+---------
 
 
-### Logo credits:
-Logo designed by Isha Chakraborty.
+__Logo Credits:__ Designed by _Isha Chakraborty_.
