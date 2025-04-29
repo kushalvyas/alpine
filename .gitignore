@@ -184,7 +184,7 @@ cython_debug/
 ./examples/lightning_logs/**
 ./examples/lightning_logs/**/*
 
-./docs/sphinx_docs/source/
+./docs/sphinx_docs/source
 ./docs/sphinx_docs/source/**
-./docs/sphinx_docs/build/
+./docs/sphinx_docs/build
 ./docs/sphinx_docs/build/**
