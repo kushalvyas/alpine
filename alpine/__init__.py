@@ -4,3 +4,4 @@ from . import models
 from . import trainers
 from . import utils
 from . import vis
+from . import metrics
