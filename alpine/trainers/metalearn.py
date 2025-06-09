@@ -6,8 +6,10 @@ from collections import OrderedDict
 import logging
 
 class MAMLMetaLearner():
+    '''Metalearning is an early experimental feature. We are in the process of integrating `torchmeta` with Alpine.'''
     def __init__(self, model, inner_steps, config={}, custom_loss_fn=None, outer_optimizer='adam', inner_loop_loss_fn=None):
         super(MAMLMetaLearner, self).__init__()
+        logging.warning("Metalearning is an early experimental feature. We are in the process of integrating `torchmeta` with Alpine.")
         self.model = model
         self.inner_steps = inner_steps
         self.config = config
@@ -38,20 +40,19 @@ class MAMLMetaLearner():
             k: v.clone().detach() if copy else v for k, v in self.model_params.items()
         })
     
-    def get_inr_parameters(self, key_prefix="inr", copy=True):
+    def get_inr_parameters(self, copy=True):
         return OrderedDict({
-            k: v.clone().detach() if copy else v for k, v in self.model_params.items() if key_prefix in k
+            k: v.clone().detach() if copy else v for k, v in self.model_params.items()
         })
     
     def set_parameters(self, params):
         self.model_params.update(params)
-    
 
     def mse_loss(self, x, y):
         return nn.functional.mse_loss(x, y)
     
     def loss_fn_mse(self, data_packet):
-        mse_loss = self.mse_loss(data_packet['output']['inr_output'], data_packet['gt'])
+        mse_loss = self.mse_loss(data_packet['output'], data_packet['gt'])
         loss_val = mse_loss
         return loss_val, {'mse_loss':float(mse_loss)}
     
@@ -72,8 +73,6 @@ class MAMLMetaLearner():
             output = torch.func.functional_call(self.model, self.model_params, coords)
             output = self.squeeze_output(output, gt)
             data_packet['output'] = output
-            # loss, loss_info = self.loss_fn(data_packet)
-            # loss = nn.functional.mse_loss(output['inr_output'], gt) # this handles mse loss
             if self.inner_loop_loss_fn is not None:
                 loss, _ = self.inner_loop_loss_fn(data_packet)
             else:
@@ -88,7 +87,6 @@ class MAMLMetaLearner():
             output = self.squeeze_output(output, gt)
             data_packet['output'] = output
             loss, loss_info = self.loss_fn(data_packet)
-            # loss = nn.functional.mse_loss(output['inr_output'], gt) # this handles mse loss
             loss.backward()
             opt_inner.step()
         return self.model_params
@@ -123,15 +121,14 @@ class MAMLMetaLearner():
         return loss, loss_info
 
     def render_inner_loop(self, coords, gt, inner_loop_steps=1):
-        b = coords.shape[0]
         model_params_copy = OrderedDict({
-            k: v.clone().detach().requires_grad_(True) for k, v in self.model_params.items() if "inr" in k
+            k: v.clone().detach().requires_grad_(True) for k, v in self.model_params.items()
         })
         opt_render = torch.optim.Adam(model_params_copy.values(), lr=self.config.get("inner_lr",1e-4))
         for _ in range(inner_loop_steps):
             opt_render.zero_grad()
             output = torch.func.functional_call(self.model, model_params_copy, coords)
-            loss = nn.functional.mse_loss(output['inr_output'], gt)
+            loss = nn.functional.mse_loss(output['output'], gt)
             loss.backward()
             opt_render.step()
         output = self.squeeze_output(output, gt)

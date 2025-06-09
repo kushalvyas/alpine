@@ -4,15 +4,13 @@ from ..trainers import AlpineBaseModule
 from .nonlin import ReLU
 
 class PosEncoding(nn.Module):
-    '''Positional encoding module to encode the input coordinates. Adapted from FFN.'''
     def __init__(self, in_features, mapping_size, scale ):
-        """_summary_
+        """Positional encoding module to encode the input coordinates. Adapted from FFN by :cite:`tancik2020` .
 
         Args:
-            in_features (_type_): _description_
-            max_freq (_type_): _description_
-            num_levels (_type_): _description_
-            log_sampling (bool, optional): _description_. Defaults to True.
+            in_features (_type_): Input features to the network such as coordinate dimensions
+            mapping_size (_type_): dimensions to map input features.
+            scale (_type_): deviation of distribution for sampling random frequencies.
         """
         super(PosEncoding, self).__init__()
         self.in_features = in_features
@@ -33,6 +31,20 @@ class PosEncoding(nn.Module):
 class FFN(AlpineBaseModule):
     def __init__(self,in_features, hidden_features, 
                  hidden_layers, out_features,  outermost_linear=True, positional_encoding='fourier', positional_encoding_kwargs={'mapping_size':256, 'scale': 10.0} ):
+        """Fourier Feature Networks by :cite:`tancik2020` . 
+    
+        Args:
+            in_features (int): number of input features. For a coordinate based model, input the number of coordinate dims (2 for 2D, 3 for 3D)
+            hidden_features (int): width of each layer in the INR. Number of neurons per layer.
+            hidden_layers (int): Total number of hidden layers in the INR.
+            out_features (int): number of output features. For a scalar or grayscale field, this is 1. For an RGB image, this field is 3.
+            outermost_linear (bool, optional): Ensures that the last layer is a linear layer with no activation. Defaults to True.
+            positional_encoding (str, optional): Encoding scheeme. Currently only fourier encoding is supported. Defaults to 'fourier'.
+            positional_encoding_kwargs (dict, optional): Parameters for position encoding layer. Defaults to {'mapping_size':256, 'scale': 10.0}.
+
+        Raises:
+            NotImplementedError: Rasies an exception for custom / non-fourier position encoding. 
+        """
         
         super(FFN, self).__init__()
 
@@ -40,7 +52,7 @@ class FFN(AlpineBaseModule):
         self.hidden_features = hidden_features
         self.hidden_layers = hidden_layers
         if positional_encoding != 'fourier' and positional_encoding is not None:
-            raise NotImplementedError(f"Positional encoding {positional_encoding} not supported. Only fourier and no encoding (None) is supported.")
+            raise NotImplementedError("Only fourier encoding is supported.")
 
         self.positional_encoding = positional_encoding
         posencoding_outdim = in_features

@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from ..trainers import BaseINR
+from ..trainers import AlpineBaseModule
 
 import numpy as np
 
@@ -21,12 +21,12 @@ def get_linear_layer(in_features, out_features, omega=30.0, bias=True, is_first=
     
     return layer
 
-class Strainer(BaseINR):
+class Strainer(AlpineBaseModule):
     def __init__(self, in_features, hidden_features, 
                  hidden_layers, 
                  out_features, num_shared_layers, num_decoders, outermost_linear=True,
                  omegas = [30.0], bias=True):
-        """Implements Strainer model by Vyas et.al.
+        """Implements Strainer INR :cite:`vyas2024learning` .
 
         Args:
             in_features (int): number of input features. For a coordinate based model, input the number of coordinate dims (2 for 2D, 3 for 3D)
@@ -108,7 +108,7 @@ class Strainer(BaseINR):
         enc_features = []
         for layer in self.encoder:
             output = layer(output)
-            if hasattr(layer, 'name') and layer.name == 'Sine':
+            if hasattr(layer, 'name') and layer.name == 'sine':
                 enc_features.append(output.detach().clone())
         enc_output = output.clone()
         

@@ -28,9 +28,8 @@ NUM_EPOCHS = int(args.num_epochs)
 batch_size = int(args.batch_size)
 mcubes_thresh = 0.5
 scale = 1.0
-savename_original = "/home/kv30/KV/ALL_INR_PROJECTS/ALPINE_LIBRARY/alpine/examples/data/occupancy/output/original_thai_statue_3d_distributed.dae"
-# savename = "/home/kv30/KV/ALL_INR_PROJECTS/ALPINE_LIBRARY/alpine/examples/data/occupancy/output/thai_statue_3d_distributed4_lrdecayv2.dae"
-savename = "/home/kv30/KV/ALL_INR_PROJECTS/ALPINE_LIBRARY/alpine/examples/data/occupancy/output/thai_statue_3d_distributed4_lrdecay_v3_lrdecay095_10000iter.dae"
+savename_original = "./data/occupancy/output/original_thai_statue_3d_distributed.dae"
+savename = "./data/occupancy/output/thai_statue_3d_distributed4_lrdecay_v3_lrdecay095_10000iter.dae"
 
 # %%
 # epochs 20, bs 1e6, lr maybe 1e-4 not 5e-5 : loss 0.00301, outputfile: 2.dae

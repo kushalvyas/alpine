@@ -4,6 +4,7 @@ import numpy as np
 import torch.nn as nn
 
 class Sine(nn.Module):
+    """Sine nonlinearity proposed by :cite:`siren2020sitzmann`"""
     def __init__(self, omega=30.0, name='sine'):
         super().__init__()
         self.omega = omega
@@ -22,6 +23,7 @@ class ReLU(nn.Module):
         return self.relu(x)
 
 class Gauss(nn.Module):
+    '''Gaussian nonlinearity proposed by :cite:`ramasinghe2022beyond`. '''
     def __init__(self, scale=1.0, name='gauss'):
         super().__init__()
         self.scale = scale
@@ -32,6 +34,7 @@ class Gauss(nn.Module):
 
 
 class Wavelet(nn.Module):
+    ''' Wavelet nonlinearty proposed by :cite:`saragadam2022wire` '''
     def __init__(self, sigma=1.0, omega=30.0, trainable=False, name="wavelet"):
         super(Wavelet, self).__init__()
         self.name = name.lower()
@@ -43,6 +46,7 @@ class Wavelet(nn.Module):
 
 
 class HOSC(nn.Module):
+    '''HOSC nonlinearity proposed by :cite:`serrano2024hoscperiodicactivationfunction` '''
     def __init__(self, beta, name='hosc'):
         super().__init__()
         self.beta = beta
@@ -52,6 +56,7 @@ class HOSC(nn.Module):
         return torch.tanh(self.beta * torch.sin(x))
 
 class Sinc(nn.Module):
+    '''Sinc nonlinearity proposed by :cite:``. '''
     def __init__(self, omega=30.0, name='sinc'):
         super().__init__()
         self.omega = omega

@@ -29,7 +29,7 @@ class Wire(AlpineBaseModule):
                  hidden_layers, 
                  out_features, outermost_linear=True,
                  omegas = [20.0], sigmas=[30.0],bias=True):
-        """Implements the Wire model by Saragadam et.al.
+        """Implements the Wire INR :cite:`saragadam2022wire` .
 
         Args:
             in_features (int): number of input features. For a coordinate based model, input the number of coordinate dims (2 for 2D, 3 for 3D)

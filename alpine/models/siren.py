@@ -25,7 +25,7 @@ class Siren(AlpineBaseModule):
                  hidden_layers, 
                  out_features, outermost_linear=True,
                  omegas = [30.0], bias=True):
-        """Implements the Siren model by Sitzmann et.al.
+        """Implements the Siren INR :cite:`siren2020sitzmann` .
 
         Args:
             in_features (int): number of input features. For a coordinate based model, input the number of coordinate dims (2 for 2D, 3 for 3D)
