@@ -1,0 +1,796 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>alpine.dataloaders package &#8212; Alpine 0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'source/alpine.dataloaders';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="alpine.models package" href="alpine.models.html" />
+    <link rel="prev" title="API Documentation" href="alpine.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../_static/alpine_logo.png" class="logo__image only-light" alt="Alpine 0.1 documentation - Home"/>
+    <img src="../_static/alpine_logo.png" class="logo__image only-dark pst-js-only" alt="Alpine 0.1 documentation - Home"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="alpine.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contributing.html">
+    Contributing to Alpine
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/kushalvyas/alpine" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="alpine.html">
+    API Documentation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../examples.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../contributing.html">
+    Contributing to Alpine
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/kushalvyas/alpine" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">alpine.dataloaders package</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="alpine.models.html">alpine.models package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="alpine.models.nonlin.html">alpine.models.nonlin package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="alpine.trainers.html">alpine.trainers package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alpine.losses.html">alpine.losses package</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="alpine.vis.html">alpine.vis package</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="alpine.vis.geometry.html">alpine.vis.geometry package</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="alpine.metrics.html">alpine.metrics package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="alpine.utils.html">alpine.utils package</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="alpine.html" class="nav-link">API Documentation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">alpine.dataloaders package</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="alpine-dataloaders-package">
+<h1>alpine.dataloaders package<a class="headerlink" href="#alpine-dataloaders-package" title="Link to this heading">#</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-alpine.dataloaders.bio">
+<span id="alpine-dataloaders-bio-module"></span><h2>alpine.dataloaders.bio module<a class="headerlink" href="#module-alpine.dataloaders.bio" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="alpine.dataloaders.bio.load_nii_gz">
+<span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.bio.</span></span><span class="sig-name descname"><span class="pre">load_nii_gz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'f_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">squeeze_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'minmax'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_as_torch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.bio.load_nii_gz" title="Link to this definition">#</a></dt>
+<dd><p>_summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>data_key</strong> (<em>str</em><em>, </em><em>optional</em>) – _description_. Defaults to ‘f_data’.</p></li>
+<li><p><strong>squeeze_dims</strong> (<em>bool</em><em>, </em><em>optional</em>) – _description_. Defaults to True.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em><em>, </em><em>optional</em>) – _description_. Defaults to False.</p></li>
+<li><p><strong>normalize_method</strong> (<em>str</em><em>, </em><em>optional</em>) – _description_. Defaults to ‘minmax’.</p></li>
+<li><p><strong>return_as_torch</strong> (<em>bool</em><em>, </em><em>optional</em>) – _description_. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="alpine.dataloaders.bio.load_pdb">
+<span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.bio.</span></span><span class="sig-name descname"><span class="pre">load_pdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.bio.load_pdb" title="Link to this definition">#</a></dt>
+<dd><p>Loading PDF file using PandasPdb</p>
+<p>Code adapted from Biopandas and &#64;jgbrasier
+<a class="reference external" href="https://medium.com/&#64;jgbrasier/working-with-pdb-files-in-python-7b538ee1b5e4">https://medium.com/&#64;jgbrasier/working-with-pdb-files-in-python-7b538ee1b5e4</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>_type_</em>) – _description_</p></li>
+<li><p><strong>model_index</strong> (<em>int</em><em>, </em><em>optional</em>) – _description_. Defaults to 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_type_</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="alpine.dataloaders.bio.normalize_fn">
+<span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.bio.</span></span><span class="sig-name descname"><span class="pre">normalize_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'minmax'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.bio.normalize_fn" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-alpine.dataloaders.coordinate_datasets">
+<span id="alpine-dataloaders-coordinate-datasets-module"></span><h2>alpine.dataloaders.coordinate_datasets module<a class="headerlink" href="#module-alpine.dataloaders.coordinate_datasets" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.coordinate_datasets.</span></span><span class="sig-name descname"><span class="pre">BatchedCoordinateDataset</span></span><a class="headerlink" href="#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.__getitem__" title="Link to this definition">#</a></dt>
+<dd><p>Returns a batch of coordinates based on the specified index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idx</strong> (<em>int</em>) – Index of the batch to be returned.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Batch of coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid_dims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(-1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.__init__" title="Link to this definition">#</a></dt>
+<dd><p>PyTorch dataloader for generating coordinate datasets in batches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_dims</strong> (<em>tuple</em>) – Input d-dimensional grid dimensions.</p></li>
+<li><p><strong>bounds</strong> (<em>tuple</em>) – Bounds of the grid. Defaults to (-1, 1).</p></li>
+<li><p><strong>vectorized</strong> (<em>bool</em>) – If True, returns a vectorized grid of shape N x d. Defaults to True.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.build_coordinate_tensors">
+<span class="sig-name descname"><span class="pre">build_coordinate_tensors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.build_coordinate_tensors" title="Link to this definition">#</a></dt>
+<dd><p>Builds coordinate tensors based on the specified grid dimensions. Used internally by BatchedCoordinateDataset.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="alpine.dataloaders.coordinate_datasets.CoordinateDataset">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.coordinate_datasets.</span></span><span class="sig-name descname"><span class="pre">CoordinateDataset</span></span><a class="headerlink" href="#alpine.dataloaders.coordinate_datasets.CoordinateDataset" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
+<p>PyTorch Dataset for generating a grid of coordinates as input to the network.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.coordinate_datasets.CoordinateDataset.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid_dims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(-1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorized</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.coordinate_datasets.CoordinateDataset.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.coordinate_datasets.CoordinateDataset.build_coordinate_tensors">
+<span class="sig-name descname"><span class="pre">build_coordinate_tensors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.coordinate_datasets.CoordinateDataset.build_coordinate_tensors" title="Link to this definition">#</a></dt>
+<dd><p>Builds coordinate tensors based on the specified grid dimensions. Used internally by BatchedCoordinateDataset.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="alpine.dataloaders.coordinate_datasets.unflat_index">
+<span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.coordinate_datasets.</span></span><span class="sig-name descname"><span class="pre">unflat_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape_of_tensor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.coordinate_datasets.unflat_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-alpine.dataloaders.dataio">
+<span id="alpine-dataloaders-dataio-module"></span><h2>alpine.dataloaders.dataio module<a class="headerlink" href="#module-alpine.dataloaders.dataio" title="Link to this heading">#</a></h2>
+</section>
+<section id="module-alpine.dataloaders.env">
+<span id="alpine-dataloaders-env-module"></span><h2>alpine.dataloaders.env module<a class="headerlink" href="#module-alpine.dataloaders.env" title="Link to this heading">#</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="alpine.dataloaders.env.load_nlcd">
+<span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.env.</span></span><span class="sig-name descname"><span class="pre">load_nlcd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_onehot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.env.load_nlcd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="alpine.dataloaders.env.nlcd_to_integer_index">
+<span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.env.</span></span><span class="sig-name descname"><span class="pre">nlcd_to_integer_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nlcd_arr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.env.nlcd_to_integer_index" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="alpine.dataloaders.env.remap_nlcd">
+<span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.env.</span></span><span class="sig-name descname"><span class="pre">remap_nlcd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.env.remap_nlcd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-alpine.dataloaders.signal_dataloaders">
+<span id="alpine-dataloaders-signal-dataloaders-module"></span><h2>alpine.dataloaders.signal_dataloaders module<a class="headerlink" href="#module-alpine.dataloaders.signal_dataloaders" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.signal_dataloaders.</span></span><span class="sig-name descname"><span class="pre">BatchedNDSignalLoader</span></span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.__getitem__" title="Link to this definition">#</a></dt>
+<dd><p>Returns a batch of signal data based on the specified index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idx</strong> (<em>int</em>) – Index of the batch to be returned.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Batch of signal data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_dims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(-1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.__init__" title="Link to this definition">#</a></dt>
+<dd><p>_summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal</strong> (<em>Any</em>) – Indexible object containing the signal data. Can be numpy array, list, torch.Tensor, etc. Must be of shape grid_dims[0] x grid_dims[1] x … x grid_dims[n] x (optional channels).</p></li>
+<li><p><strong>grid_dims</strong> (<em>tuple</em>) – _description_</p></li>
+<li><p><strong>bounds</strong> (<em>tuple</em><em>, </em><em>optional</em>) – _description_. Defaults to (-1, 1).</p></li>
+<li><p><strong>vectorized</strong> (<em>bool</em><em>, </em><em>optional</em>) – _description_. Defaults to True.</p></li>
+<li><p><strong>normalize_signal</strong> (<em>bool</em><em>, </em><em>optional</em>) – Min max normalization of the signal. Defaults to True.</p></li>
+<li><p><strong>normalize_fn</strong> (<em>callable</em><em>, </em><em>optional</em>) – custom callable function to normalize signal. Function will accept the signal as an argument. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.build_coordinate_tensors">
+<span class="sig-name descname"><span class="pre">build_coordinate_tensors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.build_coordinate_tensors" title="Link to this definition">#</a></dt>
+<dd><p>Builds coordinate tensors based on the specified grid dimensions. Used internally by BatchedCoordinateDataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.setup_signal">
+<span class="sig-name descname"><span class="pre">setup_signal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.setup_signal" title="Link to this definition">#</a></dt>
+<dd><p>Sets up the signal for the dataset. This includes reshaping, normalizing, and converting to a tensor if necessary. Used internally by BatchedNDSignalLoader.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.NDSignalLoader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">alpine.dataloaders.signal_dataloaders.</span></span><span class="sig-name descname"><span class="pre">NDSignalLoader</span></span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.NDSignalLoader.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idx</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader.__getitem__" title="Link to this definition">#</a></dt>
+<dd><p>Returns a batch of signal data based on the specified index.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>idx</strong> (<em>int</em>) – Index of the batch to be returned.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Batch of signal data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.NDSignalLoader.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tensor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_dims</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(-1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorized</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_signal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalize_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader.__init__" title="Link to this definition">#</a></dt>
+<dd><p>_summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal</strong> (<em>Any</em>) – Indexible object containing the signal data. Can be numpy array, list, torch.Tensor, etc.</p></li>
+<li><p><strong>grid_dims</strong> (<em>tuple</em>) – _description_</p></li>
+<li><p><strong>bounds</strong> (<em>tuple</em><em>, </em><em>optional</em>) – _description_. Defaults to (-1, 1).</p></li>
+<li><p><strong>vectorized</strong> (<em>bool</em><em>, </em><em>optional</em>) – _description_. Defaults to True.</p></li>
+<li><p><strong>normalize_signal</strong> (<em>bool</em><em>, </em><em>optional</em>) – Min max normalization of the signal. Defaults to True.</p></li>
+<li><p><strong>normalize_fn</strong> (<em>callable</em><em>, </em><em>optional</em>) – custom callable function to normalize signal. Function will accept the signal as an argument. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.NDSignalLoader.build_coordinate_tensors">
+<span class="sig-name descname"><span class="pre">build_coordinate_tensors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader.build_coordinate_tensors" title="Link to this definition">#</a></dt>
+<dd><p>Builds coordinate tensors based on the specified grid dimensions. Used internally by BatchedCoordinateDataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="alpine.dataloaders.signal_dataloaders.NDSignalLoader.setup_signal">
+<span class="sig-name descname"><span class="pre">setup_signal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader.setup_signal" title="Link to this definition">#</a></dt>
+<dd><p>Sets up the signal for the dataset. This includes reshaping, normalizing, and converting to a tensor if necessary. Used internally by NDSignalLoader.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-alpine.dataloaders">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-alpine.dataloaders" title="Link to this heading">#</a></h2>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-alpine.dataloaders.bio">alpine.dataloaders.bio module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.bio.load_nii_gz"><code class="docutils literal notranslate"><span class="pre">load_nii_gz()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.bio.load_pdb"><code class="docutils literal notranslate"><span class="pre">load_pdb()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.bio.normalize_fn"><code class="docutils literal notranslate"><span class="pre">normalize_fn()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-alpine.dataloaders.coordinate_datasets">alpine.dataloaders.coordinate_datasets module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset"><code class="docutils literal notranslate"><span class="pre">BatchedCoordinateDataset</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.__getitem__"><code class="docutils literal notranslate"><span class="pre">BatchedCoordinateDataset.__getitem__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.__init__"><code class="docutils literal notranslate"><span class="pre">BatchedCoordinateDataset.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.coordinate_datasets.BatchedCoordinateDataset.build_coordinate_tensors"><code class="docutils literal notranslate"><span class="pre">BatchedCoordinateDataset.build_coordinate_tensors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.coordinate_datasets.CoordinateDataset"><code class="docutils literal notranslate"><span class="pre">CoordinateDataset</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.coordinate_datasets.CoordinateDataset.__init__"><code class="docutils literal notranslate"><span class="pre">CoordinateDataset.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.coordinate_datasets.CoordinateDataset.build_coordinate_tensors"><code class="docutils literal notranslate"><span class="pre">CoordinateDataset.build_coordinate_tensors()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.coordinate_datasets.unflat_index"><code class="docutils literal notranslate"><span class="pre">unflat_index()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-alpine.dataloaders.dataio">alpine.dataloaders.dataio module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-alpine.dataloaders.env">alpine.dataloaders.env module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.env.load_nlcd"><code class="docutils literal notranslate"><span class="pre">load_nlcd()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.env.nlcd_to_integer_index"><code class="docutils literal notranslate"><span class="pre">nlcd_to_integer_index()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.env.remap_nlcd"><code class="docutils literal notranslate"><span class="pre">remap_nlcd()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-alpine.dataloaders.signal_dataloaders">alpine.dataloaders.signal_dataloaders module</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader"><code class="docutils literal notranslate"><span class="pre">BatchedNDSignalLoader</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.__getitem__"><code class="docutils literal notranslate"><span class="pre">BatchedNDSignalLoader.__getitem__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.__init__"><code class="docutils literal notranslate"><span class="pre">BatchedNDSignalLoader.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.build_coordinate_tensors"><code class="docutils literal notranslate"><span class="pre">BatchedNDSignalLoader.build_coordinate_tensors()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.BatchedNDSignalLoader.setup_signal"><code class="docutils literal notranslate"><span class="pre">BatchedNDSignalLoader.setup_signal()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader"><code class="docutils literal notranslate"><span class="pre">NDSignalLoader</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader.__getitem__"><code class="docutils literal notranslate"><span class="pre">NDSignalLoader.__getitem__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader.__init__"><code class="docutils literal notranslate"><span class="pre">NDSignalLoader.__init__()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader.build_coordinate_tensors"><code class="docutils literal notranslate"><span class="pre">NDSignalLoader.build_coordinate_tensors()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alpine.dataloaders.signal_dataloaders.NDSignalLoader.setup_signal"><code class="docutils literal notranslate"><span class="pre">NDSignalLoader.setup_signal()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-alpine.dataloaders">Module contents</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/source/alpine.dataloaders.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Alpine..
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
