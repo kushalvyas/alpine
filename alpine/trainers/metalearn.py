@@ -6,7 +6,7 @@ from collections import OrderedDict
 import logging
 
 class MAMLMetaLearner():
-    '''Metalearning is an early experimental feature. We are in the process of integrating `torchmeta` with Alpine.'''
+    """Metalearning is an early experimental feature. We are in the process of integrating `torchmeta` with Alpine"""
     def __init__(self, model, inner_steps, config={}, custom_loss_fn=None, outer_optimizer='adam', inner_loop_loss_fn=None):
         super(MAMLMetaLearner, self).__init__()
         logging.warning("Metalearning is an early experimental feature. We are in the process of integrating `torchmeta` with Alpine.")

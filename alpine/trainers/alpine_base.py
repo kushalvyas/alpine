@@ -10,12 +10,12 @@ import math
 
 class AlpineBaseModule(nn.Module):
     def __init__(self):
-        """_summary_
+        """Base class for all Alpine INR models. Each INR model defined in `alpine.models` inherits `AlpineBaseModule`. 
         """
         super(AlpineBaseModule, self).__init__()
         self.optimizer = None
         self.scheduler = None
-        self.loss_function = MSELoss()
+        self.loss_function = MSELoss() # default loss function.
         self.is_model_compiled = False
         self.best_weights = None
         self.best_loss = math.inf
@@ -44,7 +44,7 @@ class AlpineBaseModule(nn.Module):
         Args:
             optimizer_name (str, optional): Optimizer name. Defaults to "adam".
             learning_rate (float, optional): Learning rate. Defaults to 1e-4.
-            scheduler (_type_, optional): Scheduler. Defaults to None.
+            scheduler (torch.optim.lr.schedular, optional): PyTorch scheduler object. Defaults to None.
         """
         check_opt_types(optimizer_name)
         check_sch_types(scheduler)
@@ -75,58 +75,6 @@ class AlpineBaseModule(nn.Module):
         
         self.loss_function = loss_function
 
-    # def fit_signal(self, 
-    #                input : torch.Tensor,
-    #                signal : torch.Tensor,
-    #                n_iters : int = 1000,
-    #                enable_tqdm : bool = False,
-    #                return_features : bool = False,
-    #                track_loss_histroy : bool = False,
-    #                kwargs : dict = {},
-                   
-    #                ) -> dict:
-        
-    #     """
-    #     Simple fitting of the signal to the INR model
-
-    #     Args:
-    #         input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
-    #         signal (torch.Tensor): _description_
-    #         n_iters (int, optional): _description_. Defaults to 1000.
-    #         enable_tqdm (bool, optional): _description_. Defaults to False.
-    #         return_features (bool, optional): _description_. Defaults to False.
-    #         **kwargs: Other keyword arguments that is a dict of dicts. 
-    #     """
-    #     signal = wrap_signal_instance(signal) # triggers if signal is a torch.Tensor. Alpine's workflow is with dict-based and not tensor based.
-    #     loss_history = []
-
-    #     iter_pbar = range(n_iters) if not enable_tqdm else tqdm(range(n_iters), **kwargs.get("tqdm_kwargs", {}))
-    #     for iteration in iter_pbar:
-    #         self.optimizer.zero_grad()
-    #         output_packet = self(input, return_features=return_features) # forward pass returns a dict. 
-    #         loss = self.loss_function(output_packet, signal) # loss function takes in the output packet and the signal.
-
-    #         loss.backward() # backward pass
-    #         if track_loss_histroy:
-    #             loss_history.append(float(loss.item())) 
-            
-    #         self.optimizer.step()
-    #         if self.scheduler is not None:
-    #             self.scheduler.step()
-            
-    #         if enable_tqdm:
-    #             iter_pbar.set_description(f"Iteration {iteration}/{n_iters}.  Loss: {loss.item():.6f}")
-            
-        
-    #     # retvals = dict(loss=float(loss.item()), output = output_packet)
-    #     retvals = output_packet
-    #     retvals.update(dict(loss=float(loss.item())))
-    #     if track_loss_histroy:
-    #         retvals.update(dict(loss_history = loss_history))
-        
-        
-    #     return retvals
-    
     def fit_signal(self, 
                    *,
                    input : torch.Tensor = None,
@@ -144,20 +92,20 @@ class AlpineBaseModule(nn.Module):
         """Final 
 
         Args:
-            input (torch.Tensor, optional): _description_. Defaults to None.
-            signal (Union[torch.Tensor, dict], optional): _description_. Defaults to None.
-            dataloader (torch.utils.data.DataLoader, optional): _description_. Defaults to None.
-            n_iters (int, optional): _description_. Defaults to 1000.
-            closure (callable, optional): _description_. Defaults to None.
-            enable_tqdm (bool, optional): _description_. Defaults to True.
-            return_features (bool, optional): _description_. Defaults to False.
-            track_loss_history (bool, optional): _description_. Defaults to False.
-            metric_trackers (dict, optional): _description_. Defaults to None.
-            save_best_weights (bool, optional): _description_. Defaults to False.
-            kwargs (dict, optional): _description_. Defaults to {}.
+            input (torch.Tensor, optional): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
+            signal (Union[torch.Tensor, dict], optional): PyTorch tensor or dictionary containing the signal and auxiliary data. Pleaee use `key=signal` for signal or ground truth measurement. Defaults to None.
+            dataloader (torch.utils.data.DataLoader, optional): Input coordinate-signal pytorch dataloader object. Defaults to None.
+            n_iters (int, optional): Number of iterations for fitting signal. Defaults to 1000.
+            closure (callable, optional): Callable for custom forward propagation. Defaults to None and uses `AlpineBaseModules's` forward propagation with mse losss
+            enable_tqdm (bool, optional): Enables tqdm progress bar. Defaults to True.
+            return_features (bool, optional): Return intermediate INR features. Defaults to False.
+            track_loss_history (bool, optional): Track loss while fitting the signal. Defaults to False.
+            metric_trackers (dict, optional): Dictionary of torchmetrics Metrictracker objects. Defaults to None.
+            save_best_weights (bool, optional): Use best weights saved during training. Defaults to False.
+            kwargs (dict, optional): Other keyword arguments that is a dict of dicts. Defaults to {}.
 
         Returns:
-            dict: _description_
+            dict: Returns a dictionary containing the output from the INR, with features if return_features=True, loss, and other metrics if provided.
         """
         if dataloader is not None and (input is not None or signal is not None):
             raise ValueError("Either dataloader or input and signal pair must be provided, not all.")
@@ -207,14 +155,14 @@ class AlpineBaseModule(nn.Module):
 
         Args:
             input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
-            signal (torch.Tensor): Ground truth truth signal or dictionary.
-            n_iters (int, optional): _description_. Defaults to 1000.
-            closure (callable, optional): _description_. Defaults to None.
-            enable_tqdm (bool, optional): _description_. Defaults to True.
-            return_features (bool, optional): _description_. Defaults to False.
-            track_loss_history (bool, optional): _description_. Defaults to False.
-            metric_trackers (dict, optional): _description_. Defaults to None.
-            save_best_weights (bool, optional): _description_. Defaults to False.
+            signal (torch.Tensor): PyTorch tensor or dictionary containing the signal and auxiliary data. Pleaee use `key=signal` for signal or ground truth measurement. Defaults to None.
+            n_iters (int, optional): Number of iterations for fitting signal. Defaults to 1000.
+            closure (callable, optional): Callable for custom forward propagation. Defaults to None and uses `AlpineBaseModules's` forward propagation with mse losss
+            enable_tqdm (bool, optional): Enables tqdm progress bar. Defaults to True.
+            return_features (bool, optional): Return intermediate INR features. Defaults to False.
+            track_loss_history (bool, optional): Track loss while fitting the signal. Defaults to False.
+            metric_trackers (dict, optional): Dictionary of torchmetrics Metrictracker objects. Defaults to None.
+            save_best_weights (bool, optional): Use best weights saved during training. Defaults to False.
             kwargs (dict, optional): Other keyword arguments that is a dict of dicts. Defaults to {}.
         
         Returns:
@@ -289,17 +237,17 @@ class AlpineBaseModule(nn.Module):
 
         Args:
             dataloader (torch.utils.data.DataLoader): _description_
-            n_iters (int, optional): _description_. Defaults to 1000.
-            closure (callable, optional): _description_. Defaults to None.
-            enable_tqdm (bool, optional): _description_. Defaults to True.
-            return_features (bool, optional): _description_. Defaults to False.
-            track_loss_history (bool, optional): _description_. Defaults to False.
-            metric_trackers (dict, optional): _description_. Defaults to None.
-            save_best_weights (bool, optional): _description_. Defaults to False.
-            kwargs (dict, optional): _description_. Defaults to {}.
+            n_iters (int, optional): Number of iterations for fitting signal. Defaults to 1000.
+            closure (callable, optional): Callable for custom forward propagation. Defaults to None and uses `AlpineBaseModules's` forward propagation with mse losss
+            enable_tqdm (bool, optional): Enables tqdm progress bar. Defaults to True.
+            return_features (bool, optional): Return intermediate INR features. Defaults to False.
+            track_loss_history (bool, optional): Track loss while fitting the signal. Defaults to False.
+            metric_trackers (dict, optional): Dictionary of torchmetrics Metrictracker objects. Defaults to None.
+            save_best_weights (bool, optional): Use best weights saved during training. Defaults to False.
+            kwargs (dict, optional): Other keyword arguments that is a dict of dicts. Defaults to {}.
 
         Returns:
-            _type_: _description_
+            dict: Returns a dictionary containing the output from the INR, with features if return_features=True, loss, and other metrics if provided.
         """
     
         if not self.is_model_compiled:
@@ -365,12 +313,12 @@ class AlpineBaseModule(nn.Module):
 
         Args:
             input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
-            closure (_type_, optional): _description_. Defaults to None.
-            return_features (bool, optional): _description_. Defaults to False.
-            use_best_weights (bool, optional): _description_. Defaults to False.
+            closure (callable, optional): Callable for custom forward propagation. Defaults to None and uses `AlpineBaseModules's` forward propagation with mse losss
+            return_features (bool, optional): Return intermediate INR features. Defaults to False.
+            use_best_weights (bool, optional): Use best weights saved during training. Defaults to False.
 
         Returns:
-            _type_: _description_
+            dict: Returns a dictionary containing the output from the INR, with features if return_features=True.
         """
         # _weights = OrderedDict({k:v.clone().detach() for k,v in self.state_dict().items()})
         # self.load_weights(_weights)
