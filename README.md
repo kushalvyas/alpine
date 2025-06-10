@@ -12,6 +12,9 @@ Alpine also offers a powerful visualization library that helps you take a peek u
 > Alpine is work in progress. We appreciate any constructive community feedback and support. We invite all the researchers across all disciplines to explore, and suggest any features you find particularly useful. Our goal is to make `Alpine` the go-to place for scientific computing using INRs!
 
 
+## Documentation
+Please refer to the [hosted documentation](https://kushalvyas.github.io/alpine-docs) for API documentation.
+
 ## Setup instructions
 
 
@@ -25,7 +28,7 @@ We'll have our contribution guidelines up soon. Meanwhile, please feel free to r
 
 ## Examples
 
-We provide extensive examples across the tasks of 
+We provide extensive examples across the tasks of ( in progress )
 - Audio (1-D)
 - Images (2-D) 
 - Volumes (3-D) fitting
