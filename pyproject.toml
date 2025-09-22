@@ -19,6 +19,8 @@ authors = [
 
 dependencies = [
     "torch~=2.8.0",
+    "torchaudio~=2.8.0",
+    "soundfile~=0.12.1",
     "lightning~=2.5.4",
     "torchmetrics~=1.8.2",
     "numpy>=1.23,<2.3",
