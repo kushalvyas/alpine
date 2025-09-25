@@ -54,6 +54,12 @@ class Siren(AlpineBaseModule):
         self.model.append(get_linear_layer(hidden_features, out_features, is_first=False, is_last=outermost_linear,bias=bias))
         if not outermost_linear:
             self.model.append(Sine(omega=self.omegas[-1]))
+            
+        # Register forward hooks on all sine layers to extract features
+        self.features = [] # List to store features
+        for layer in self.model:
+            if isinstance(layer, Sine):
+                layer.register_forward_hook(self.hook_fn)
 
     
     def forward(self, coords, return_features=False):
@@ -85,14 +91,14 @@ class Siren(AlpineBaseModule):
         Returns:
             dict: Returns a dict with keys: output, features. The output key contains the output of the model. The features key contains the intermediate features of the model.
         """
-        features = []
-        output = coords.clone()
-        for i,  layer in enumerate(self.model):
-            output = layer(output)
-            if hasattr(layer, 'name') and layer.name == 'sine':
-                features.append(output.detach().clone())
-        return {'output':output, 'features':features}
+        self.features = [] # Reset features list
+        output = self(coords)['output']
+        return {'output': output, 'features': self.features}
         
     def load_weights(self, weights):
         self.load_state_dict(weights)
+        
+    def hook_fn(self, module, input, output):
+        self.features.append(output.detach().clone())
+        
 
