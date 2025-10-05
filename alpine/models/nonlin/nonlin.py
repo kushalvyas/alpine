@@ -3,7 +3,9 @@ import numpy as np
 
 import torch.nn as nn
 
-class Sine(nn.Module):
+from activation import TrackedActivation
+
+class Sine(TrackedActivation):
     """Sine nonlinearity proposed by :cite:`siren2020sitzmann`"""
     def __init__(self, omega=30.0, name='sine'):
         super().__init__()
@@ -13,7 +15,7 @@ class Sine(nn.Module):
     def forward(self, x):
         return torch.sin(self.omega * x)
 
-class ReLU(nn.Module):
+class ReLU(TrackedActivation):
     def __init__(self, name='relu'):
         super().__init__()
         self.relu = nn.ReLU()
@@ -22,7 +24,7 @@ class ReLU(nn.Module):
     def forward(self, x):
         return self.relu(x)
 
-class Gauss(nn.Module):
+class Gauss(TrackedActivation):
     '''Gaussian nonlinearity proposed by :cite:`ramasinghe2022beyond`. '''
     def __init__(self, scale=1.0, name='gauss'):
         super().__init__()
@@ -33,7 +35,7 @@ class Gauss(nn.Module):
         return torch.exp(-(self.scale * x)**2)
 
 
-class Wavelet(nn.Module):
+class Wavelet(TrackedActivation):
     ''' Wavelet nonlinearty proposed by :cite:`saragadam2022wire` '''
     def __init__(self, sigma=1.0, omega=30.0, trainable=False, name="wavelet"):
         super(Wavelet, self).__init__()
@@ -45,7 +47,7 @@ class Wavelet(nn.Module):
         return torch.exp(1j * (self.omega * x)  - (self.sigma * x).abs().square())
 
 
-class HOSC(nn.Module):
+class HOSC(TrackedActivation):
     '''HOSC nonlinearity proposed by :cite:`serrano2024hoscperiodicactivationfunction` '''
     def __init__(self, beta, name='hosc'):
         super().__init__()
@@ -55,7 +57,7 @@ class HOSC(nn.Module):
     def forward(self, x):
         return torch.tanh(self.beta * torch.sin(x))
 
-class Sinc(nn.Module):
+class Sinc(TrackedActivation):
     '''Sinc nonlinearity proposed by :cite:``. '''
     def __init__(self, omega=30.0, name='sinc'):
         super().__init__()
