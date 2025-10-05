@@ -53,6 +53,8 @@ Repository = "https://github.com/kushalvyas/alpine.git"
 Issues = "https://github.com/kushalvyas/alpine/issues"
 
 [project.optional-dependencies]
-
+dev = [
+    "pytest>=8.0.0",
+]
 [tool.setuptools.packages.find]
 include = ["alpine*"]
