@@ -3,7 +3,7 @@ import numpy as np
 
 import torch.nn as nn
 
-from activation import TrackedActivation
+from alpine.models.nonlin.tracked_activation import TrackedActivation
 
 class Sine(TrackedActivation):
     """Sine nonlinearity proposed by :cite:`siren2020sitzmann`"""
