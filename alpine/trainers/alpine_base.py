@@ -5,8 +5,10 @@ from ..utils.checkers import wrap_signal_instance
 from tqdm.autonotebook import tqdm
 from ..losses import MSELoss
 from collections import OrderedDict
+from .feature_extractor import FeatureExtractor
 from typing import Union
 import math
+
 
 class AlpineBaseModule(nn.Module):
     def __init__(self):
@@ -74,6 +76,23 @@ class AlpineBaseModule(nn.Module):
         check_lossfn_types(loss_function)
         
         self.loss_function = loss_function
+        
+    def _forward_w_features(self, input):
+        """
+        Runs a forward pass and extracts features using FeatureExtractor context manager.
+        Args:
+            input (torch.Tensor): Input coordinates of shape ( B x * x D) where B is batch size, and D is the dimensionality of the input grid.
+        Returns:
+            dict: Returns a dictionary containing the output from the INR, with features.
+        """
+        with FeatureExtractor(self) as extractor:
+            output = self(input) # forward pass
+        # add features to output dict
+        if isinstance(output, dict):
+            output.update({'features': extractor.features})
+        else:
+            output = {'output': output, 'features': extractor.features}
+        return output
 
     def fit_signal(self, 
                    *,
@@ -178,8 +197,12 @@ class AlpineBaseModule(nn.Module):
         for iteration in iter_pbar:
             self.optimizer.zero_grad()
             if closure is None:
-                output_packet = self(input, return_features=return_features) # forward pass returns a dict. 
+                if return_features:
+                    output_packet = self._forward_w_features(input)
+                else:
+                    output_packet = self(input) # forward pass returns a dict.
             else:
+
                 output_packet = closure(self, input, signal=signal, iteration=iteration, return_features=return_features, **kwargs)
             
             loss = self.loss_function(output_packet, signal) # loss function takes in the output packet and the signal.
@@ -329,5 +352,8 @@ class AlpineBaseModule(nn.Module):
             if closure is not None:
                 output_quantities = closure(self, input, return_features=return_features)
             else:
-                output_quantities = self(input, return_features=return_features)
+                if return_features:
+                    output_quantities = self._forward_w_features(input)
+                else:
+                    output_quantities = self(input) # forward pass returns a dict.
             return output_quantities

@@ -43,5 +43,5 @@ class FeatureExtractor:
             input (tuple): Input to the layer.
             output (torch.Tensor): Output from the layer.
         """
-        self.features.append(output.detach())
+        self.features.append(output.detach().clone())
         
