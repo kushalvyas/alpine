@@ -32,16 +32,16 @@ def test_forward_with_return_features(coords):
     
     # Features should have linear, sine, linear, sine, linear
     # Check that we have the expected activations
-    assert 'linear.0' in out['features']  
-    assert out['features']['linear.0']['pre'].shape == (5, 3)
-    assert 'sine.1' in out['features']   
-    assert out['features']['sine.1']['post'].shape == (5, 8)
-    assert 'linear.2' in out['features']
-    assert out['features']['linear.2']['pre'].shape == (5, 8)
-    assert 'sine.3' in out['features']
-    assert out['features']['sine.3']['post'].shape == (5, 8)
-    assert 'linear.4' in out['features']
-    assert out['features']['linear.4']['pre'].shape == (5, 8)
+    assert 'linear_0_pre' in out['features']  
+    assert out['features']['linear_0_pre'].shape == (5, 3)
+    assert 'sine_0_post' in out['features']   
+    assert out['features']['sine_0_post'].shape == (5, 8)
+    assert 'linear_1_pre' in out['features']
+    assert out['features']['linear_1_pre'].shape == (5, 8)
+    assert 'sine_1_post' in out['features']
+    assert out['features']['sine_1_post'].shape == (5, 8)
+    assert 'linear_2_pre' in out['features']
+    assert out['features']['linear_2_pre'].shape == (5, 8)
     
     
 def test_outermost_linear_toggle():
