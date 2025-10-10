@@ -32,13 +32,6 @@ class AlpineBaseModule(nn.Module):
         """
         raise NotImplementedError("Please implement the forward method in your subclass.")
     
-    def forward_w_features(self, *args, **kwargs):
-        """Forward pass with features.
-
-        Raises:
-            NotImplementedError: Please implement the forward method in your subclass.
-        """
-        raise NotImplementedError("Please implement the forward_w_features method in your subclass.")
     
     def compile(self, optimizer_name="adam", learning_rate=1e-4, scheduler=None):
         """Setup optimizers.
@@ -77,7 +70,7 @@ class AlpineBaseModule(nn.Module):
         
         self.loss_function = loss_function
         
-    def _forward_w_features(self, input):
+    def forward_w_features(self, input):
         """
         Runs a forward pass and extracts features using FeatureExtractor context manager.
         Args:
@@ -89,9 +82,9 @@ class AlpineBaseModule(nn.Module):
             output = self(input) # forward pass
         # add features to output dict
         if isinstance(output, dict):
-            output.update({'features': extractor.features})
+            output.update({'features': dict(extractor.features)})
         else:
-            output = {'output': output, 'features': extractor.features}
+            output = {'output': output, 'features': dict(extractor.features)}
         return output
 
     def fit_signal(self, 
@@ -198,7 +191,7 @@ class AlpineBaseModule(nn.Module):
             self.optimizer.zero_grad()
             if closure is None:
                 if return_features:
-                    output_packet = self._forward_w_features(input)
+                    output_packet = self.forward_w_features(input)
                 else:
                     output_packet = self(input) # forward pass returns a dict.
             else:
@@ -353,7 +346,7 @@ class AlpineBaseModule(nn.Module):
                 output_quantities = closure(self, input, return_features=return_features)
             else:
                 if return_features:
-                    output_quantities = self._forward_w_features(input)
+                    output_quantities = self.forward_w_features(input)
                 else:
                     output_quantities = self(input) # forward pass returns a dict.
             return output_quantities
