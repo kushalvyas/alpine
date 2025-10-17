@@ -9,13 +9,15 @@ class FeatureExtractor:
         self.track_linear = track_linear
         self.track_nonlinear = track_nonlinear
         self.hooks = [] # List to store hook handles
-        self.features = defaultdict(dict) # {layer_name: {'pre': tensor, 'post': tensor}}
+        self.features = defaultdict(dict) # {layer_name_pre: tensor}
     
         
     def __enter__(self):
         linear_idx = 0
         nonlin_idx = 0
-        for name, module in self.model.named_modules():
+        
+        layers = self.model.get_layers() if hasattr(self.model, 'get_layers') else self.model.named_modules()
+        for name, module in layers:
             if self.track_linear and isinstance(module, nn.Linear):
                 
                 handle = module.register_forward_hook(

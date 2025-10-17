@@ -86,6 +86,13 @@ class AlpineBaseModule(nn.Module):
         else:
             output = {'output': output, 'features': dict(extractor.features)}
         return output
+    
+    def get_layers(self):
+        """ Returns a an iterable of (name, module) pairs representing all layers for feature extraction.
+        Subclasses can override this to customize which layers are exposed and how they are named.
+        """
+        
+        return list(self.named_modules())
 
     def fit_signal(self, 
                    *,
