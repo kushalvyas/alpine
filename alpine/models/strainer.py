@@ -95,35 +95,6 @@ class Strainer(AlpineBaseModule):
         dec_outputs = torch.stack(dec_outputs, dim=1)
         return {'output': dec_outputs}
     
-    def forward_w_features(self, coords):
-        """Compute the forward pass of the Strainer model and return intermediate features.
-
-        Args:
-            coords (torch.Tensor): Input coordinates or features to the model of shape $b \\times num\_decoder \cdots * \\times d$
-
-        Returns:
-            dict: Returns a dict with keys: output, enc_features and dec_features. The output key contains the output of the model while enc_features and dec_features contain the intermediate features of the encoder and decoder respectively.
-        """
-        output = coords
-        enc_features = []
-        for layer in self.encoder:
-            output = layer(output)
-            if hasattr(layer, 'name') and layer.name == 'sine':
-                enc_features.append(output.detach().clone())
-        enc_output = output.clone()
-        
-        dec_outputs = []
-        dec_features = [[] for _ in range(self.num_decoders)]
-        for i, decoder in enumerate(self.decoder):
-            dec_output = enc_output.clone()
-            for dec_layer in decoder:
-                dec_output = dec_layer(dec_output)
-                dec_features[i].append(dec_output.detach().clone())
-            dec_outputs.append(dec_output)
-        
-        dec_outputs = torch.stack(dec_outputs, dim=1)
-        return {'features': {'enc_features': enc_features, 'dec_features': dec_features}, 'output': dec_outputs}
-    
     def load_weights(self, weights):
         self.load_state_dict(weights)
 
