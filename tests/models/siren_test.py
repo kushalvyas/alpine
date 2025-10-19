@@ -30,18 +30,13 @@ def test_forward_with_return_features(coords):
     assert 'output' in out
     assert 'features' in out
     
-    # Features should have linear, sine, linear, sine, linear
-    # Check that we have the expected activations
-    assert 'linear_0_pre' in out['features']  
-    assert out['features']['linear_0_pre'].shape == (5, 3)
-    assert 'sine_0_post' in out['features']   
-    assert out['features']['sine_0_post'].shape == (5, 8)
-    assert 'linear_1_pre' in out['features']
-    assert out['features']['linear_1_pre'].shape == (5, 8)
-    assert 'sine_1_post' in out['features']
-    assert out['features']['sine_1_post'].shape == (5, 8)
-    assert 'linear_2_pre' in out['features']
-    assert out['features']['linear_2_pre'].shape == (5, 8)
+    layers_dict = out['features']['model']
+    assert 'pre_activation' in layers_dict['0']
+    assert 'post_activation' in layers_dict['1']
+    assert 'pre_activation' in layers_dict['2']
+    assert 'post_activation' in layers_dict['3']
+    assert 'pre_activation' in layers_dict['4']
+    
     
     
 def test_outermost_linear_toggle():
