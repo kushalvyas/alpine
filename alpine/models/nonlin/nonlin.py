@@ -3,29 +3,42 @@ import numpy as np
 
 import torch.nn as nn
 
-class Sine(nn.Module):
+import torch
+import torch.nn as nn
+
+class Nonlinear(nn.Module):
+    """Base class for activation functions that can be tracked using the FeatureExtractor context manager."""
+    def __init__(self, name: str):
+        super().__init__()
+        self.name = name.lower()
+
+    def forward(self, x):
+        raise NotImplementedError("Subclasses must implement forward()")
+    
+    
+class Sine(Nonlinear):
     """Sine nonlinearity proposed by :cite:`siren2020sitzmann`"""
     def __init__(self, omega=30.0, name='sine'):
-        super().__init__()
+        super().__init__(name=name)
         self.omega = omega
         self.name = name.lower()
     
     def forward(self, x):
         return torch.sin(self.omega * x)
 
-class ReLU(nn.Module):
+class ReLU(Nonlinear):
     def __init__(self, name='relu'):
-        super().__init__()
+        super().__init__(name=name)
         self.relu = nn.ReLU()
         self.name = name.lower()
 
     def forward(self, x):
         return self.relu(x)
 
-class Gauss(nn.Module):
+class Gauss(Nonlinear):
     '''Gaussian nonlinearity proposed by :cite:`ramasinghe2022beyond`. '''
     def __init__(self, scale=1.0, name='gauss'):
-        super().__init__()
+        super().__init__(name=name)
         self.scale = scale
         self.name = name.lower()
     
@@ -33,10 +46,10 @@ class Gauss(nn.Module):
         return torch.exp(-(self.scale * x)**2)
 
 
-class Wavelet(nn.Module):
+class Wavelet(Nonlinear):
     ''' Wavelet nonlinearty proposed by :cite:`saragadam2022wire` '''
     def __init__(self, sigma=1.0, omega=30.0, trainable=False, name="wavelet"):
-        super(Wavelet, self).__init__()
+        super(Wavelet, self).__init__(name=name)
         self.name = name.lower()
         self.sigma = nn.Parameter(sigma * torch.ones(1), requires_grad=trainable)
         self.omega = nn.Parameter(omega * torch.ones(1), requires_grad=trainable)
@@ -45,20 +58,20 @@ class Wavelet(nn.Module):
         return torch.exp(1j * (self.omega * x)  - (self.sigma * x).abs().square())
 
 
-class HOSC(nn.Module):
+class HOSC(Nonlinear):
     '''HOSC nonlinearity proposed by :cite:`serrano2024hoscperiodicactivationfunction` '''
     def __init__(self, beta, name='hosc'):
-        super().__init__()
+        super().__init__(name=name)
         self.beta = beta
         self.name = name.lower()
     
     def forward(self, x):
         return torch.tanh(self.beta * torch.sin(x))
 
-class Sinc(nn.Module):
+class Sinc(Nonlinear):
     '''Sinc nonlinearity proposed by :cite:``. '''
     def __init__(self, omega=30.0, name='sinc'):
-        super().__init__()
+        super().__init__(name=name)
         self.omega = omega
         self.name = name.lower()
     
