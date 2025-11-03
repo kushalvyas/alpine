@@ -73,25 +73,6 @@ class Siren(AlpineBaseModule):
         for i,  layer in enumerate(self.model):
             output = layer(output)
         return {'output':output}
-
-        
-    
-    def forward_w_features(self, coords):
-        """Compute the forward pass of the Siren model and return intermediate features.
-
-        Args:
-            coords (torch.Tensor): Input coordinates or features to the model of shape $b \times * \times d$
-
-        Returns:
-            dict: Returns a dict with keys: output, features. The output key contains the output of the model. The features key contains the intermediate features of the model.
-        """
-        features = []
-        output = coords.clone()
-        for i,  layer in enumerate(self.model):
-            output = layer(output)
-            if hasattr(layer, 'name') and layer.name == 'sine':
-                features.append(output.detach().clone())
-        return {'output':output, 'features':features}
         
     def load_weights(self, weights):
         self.load_state_dict(weights)
