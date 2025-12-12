@@ -46,16 +46,17 @@ If you find Alpine useful, please consider citing us!
     
     @software{vyas_alpine_2025
         author={ Vyas, Kushal and Saragadam, Vishwanath and Veeraraghavan, Ashok and Balakrishnan, Guha},
-        title = {Alpine - A PyTorch Library for Implicit Neural Representations},
+        title = {Alpine: A Flexible, User-Friendly, and Distributed PyTorch Library for Implicit Neural Representation Development},
         year={2025},
         url={https://github.com/kushalvyas/alpine}
     }
 
     @misc{vyas_alpine_2025,
         author = {Vyas, Kushal and Saragadam, Vishwanath and Veeraraghavan, Ashok and Balakrishnan, Guha},
-        title = {Alpine - A PyTorch Library for Implicit Neural Representations},
-        booktitle={CVPR Workshop Neural Fields Beyond Conventional Cameras}
-        year={2025}
+        title = {Alpine: A Flexible, User-Friendly, and Distributed PyTorch Library for Implicit Neural Representation Development},
+        booktitle={CVPR Workshop Neural Fields Beyond Conventional Cameras},
+        year={2025},
+        url={https://github.com/kushalvyas/alpine}
     }
 
 ---------
