@@ -197,3 +197,10 @@ cython_debug/
 ./docs/sphinx_docs/build/**
 ./docs/_build/
 ./docs/_build/**
+
+./build_docs/_build/
+./build_docs/_build/**
+./build_docs/_templates/
+./build_docs/_templates/**
+
+
