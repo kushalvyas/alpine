@@ -190,3 +190,10 @@ cython_debug/
 ./docs/sphinx_docs/build/**
 ./docs/_build/
 ./docs/_build/**
+
+./docs/sphinx_docs/sources
+./docs/sphinx_docs/sources/**
+./docs/sphinx_docs/build
+./docs/sphinx_docs/build/**
+./docs/_build/
+./docs/_build/**
