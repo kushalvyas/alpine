@@ -13,8 +13,6 @@ mkdir -p ../docs/_static/
 mkdir -p ../docs/sources/
 
 echo "Copying static files to docs..."
-cp -r ./_build/html/_static/ ../docs/_static/
-cp -r ./_build/html/sources/*.html ../docs/sources/
-cp -r ./_build/html/*.html ../docs/
+cp -r ./_build/html/* ../docs/
 
 echo "Done!"
