@@ -15,6 +15,7 @@ class LightningTrainer(pl.LightningModule):
         super(LightningTrainer, self).__init__()
         self.save_hyperparameters(ignore=['model'])
         self.model = model
+        self.train_dataloader = None
         if dataloader is not None:
             self.dataloader = dataloader
         # self.train_dataloader = dataloader

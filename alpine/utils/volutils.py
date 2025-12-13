@@ -5,7 +5,6 @@ import itertools
 import os
 import pdb
 import copy
-
 import numpy as np
 from scipy import io
 from skimage.metrics import structural_similarity as ssim_func
@@ -21,13 +20,14 @@ def march_and_save(occupancy, mcubes_thres, savename, smoothen=False):
     '''
         Convert volumetric occupancy cube to a 3D mesh
         
-        Inputs:
+        Args:
             occupancy: (H, W, T) occupancy volume with values going from 0 to 1
             mcubes_thres: Threshold for marching cubes algorithm
             savename: DAE file name to save
             smoothen: If True, the mesh is binarized, smoothened, and then the
                 marching cubes is applied
-        Outputs:
+        
+        Returns:
             None
     '''
     if smoothen:
