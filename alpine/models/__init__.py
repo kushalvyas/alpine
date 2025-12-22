@@ -4,3 +4,4 @@ from ..trainers.alpine_base import AlpineBaseModule
 from .strainer import Strainer
 from .wire import Wire
 from .ffn import FFN
+from .finer import Finer

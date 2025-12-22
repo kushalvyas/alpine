@@ -77,3 +77,14 @@ class Sinc(Nonlinear):
     
     def forward(self, x):
         return torch.sinc(self.omega * x)
+    
+class FinerSine(Nonlinear):
+    '''Finer nonlinearity proposed by :cite: 'liu2024finer'''
+    def __init__(self, omega=30.0, name='finer'):
+        super().__init__(name=name)
+        self.omega = omega
+        self.name = name.lower()
+    
+    def forward(self, x):
+        scale  = torch.abs(x) + 1
+        return torch.sin(self.omega * scale * x)
