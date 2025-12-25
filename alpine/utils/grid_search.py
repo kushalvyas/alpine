@@ -1,7 +1,8 @@
 
 import itertools
 from alpine.trainers.alpine_base import AlpineBaseModule
-
+import pandas as pd
+from tqdm import tqdm
 class GridSearch:
     def __init__(
         self,
@@ -39,37 +40,66 @@ class GridSearch:
         num_iterations = len(model_param_combos) * len(compile_param_combos) * len(self.n_iters)
         if verbose:
             print(f"Starting grid search with {num_iterations} candidates on {self.device}.")
+            outer_pbar = tqdm(total=num_iterations, desc="Grid Search Progress", position=0)
     
         for model_params in model_param_combos:
             for compile_params in compile_param_combos:
                 for n_iters_param in self.n_iters:
-                    model = self.model_class(**model_params).to(self.device)
-                    model.compile(**compile_params)
-                    if verbose:
-                       config_str = f"Arch: {model_params} | Optim: {compile_params} | Iters: {n_iters_param}"
-                       print(f"Running configuration: {config_str}")
-                    result = model.fit_signal(
-                        input = coords,
-                        signal = signal,
-                        enable_tqdm = verbose,
-                        return_features = False,
-                        track_loss_history = False,
-                        n_iters=n_iters_param,
-                        metric_trackers=metric_trackers,
-                    )
-                    
-                    final_loss = result['loss']
-                    if verbose:
-                        print(f"--> Loss: {final_loss:.6f}")
+                    try:
+                        model = self.model_class(**model_params).to(self.device)
+                        model.compile(**compile_params)
+                        if verbose:
+                            config_str = f"Arch: {model_params} | Optim: {compile_params} | Iters: {n_iters_param}"
+                            outer_pbar.write(f"Running: {config_str}")
+                            
+                        kwargs = {}
+                        if verbose:
+                            kwargs = {
+                                'tqdm_kwargs': {'position': 1, 'leave': False, 'desc': 'Training'}
+                            }
+                        result = model.fit_signal(
+                            input = coords,
+                            signal = signal,
+                            enable_tqdm = verbose,
+                            return_features = False,
+                            track_loss_history = False,
+                            n_iters=n_iters_param,
+                            metric_trackers=metric_trackers,
+                            kwargs=kwargs,
+                        )
                         
-                    self.results.append({
-                        'model_params': model_params,
-                        'compile_params': compile_params,
-                        'n_iters_param': n_iters_param,
-                        'result': result,
-                    })
+                        final_loss = result.get('loss', float('nan'))
+                        metrics = result.get('metrics', {})
+                        status = "Success"
+                    except Exception as e:
+                        if verbose:
+                            outer_pbar.write(f"--> FAILED: {e}")
+                        final_loss = float('nan')
+                        metrics = {}
+                        status = f"Failed: {e}"
+                        
+                    if verbose:
+                        outer_pbar.set_postfix({'Last Loss': f"{final_loss:.6f}"})
+                        outer_pbar.update(1)
                     
+                    record = {
+                        'status': status,
+                        'loss': final_loss,
+                        **metrics,
+                        **model_params,
+                        **compile_params,
+                        'n_iters': n_iters_param,
+                    }
+                    self.results.append(record)
+                    
+        if verbose:
+            outer_pbar.close()
         return self.results
+    
+    def get_results_df(self):
+        if not self.results:
+            return pd.DataFrame()
+        return pd.DataFrame(self.results).sort_values(by='loss')
                     
         
         
