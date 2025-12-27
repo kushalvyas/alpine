@@ -33,7 +33,7 @@ jobs:
       # We explicitly install the CPU versions of torch components first.
       # This prevents pip from downloading the massive CUDA-enabled versions later.
       run: |
-        pip install torch torchaudio torchmetrics lightning --index-url https://download.pytorch.org/whl/cpu
+        pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
 
     - name: Install Alpine
       # Installs the package in editable mode with 'dev' deps (pytest)
