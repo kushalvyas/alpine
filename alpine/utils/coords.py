@@ -17,6 +17,7 @@ def get_coords2d(H, W):
     coords = torch.hstack([xx.reshape(-1, 1), yy.reshape(-1, 1)])
     return coords
 
+
 def get_coords3d(H, W, D):
     """Get 3D coordinates for a grid size H x W x D.
 
@@ -35,7 +36,8 @@ def get_coords3d(H, W, D):
     coords = torch.hstack([xx.reshape(-1, 1), yy.reshape(-1, 1), zz.reshape(-1, 1)])
     return coords
 
-def get_coords3d_INT(H,W,D):
+
+def get_coords3d_INT(H, W, D):
     x = torch.arange(W).long()
     y = torch.arange(H).long()
     z = torch.arange(D).long()
@@ -44,7 +46,7 @@ def get_coords3d_INT(H,W,D):
     return coords
 
 
-def get_coords_nd(*args, bounds=(-1,1), indexing='ij'):
+def get_coords_nd(*args, bounds=(-1, 1), indexing="ij"):
     """Get flattened coordinates for ND grid.
 
     Args:
@@ -61,8 +63,7 @@ def get_coords_nd(*args, bounds=(-1,1), indexing='ij'):
     return coords
 
 
-
-def get_coords_spatial(*args, bounds=(-1,1), indexing='ij'):
+def get_coords_spatial(*args, bounds=(-1, 1), indexing="ij"):
     """Get spatial coordinates for ND grid.
 
     Args:
@@ -76,4 +77,3 @@ def get_coords_spatial(*args, bounds=(-1,1), indexing='ij'):
     meshgrid = torch.meshgrid(*_coords, indexing=indexing)
     coords = torch.stack(meshgrid, dim=-1)
     return coords
-

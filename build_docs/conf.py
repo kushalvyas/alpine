@@ -8,34 +8,36 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../alpine'))
 
-project = 'Alpine'
+sys.path.insert(0, os.path.abspath("../alpine"))
+
+project = "Alpine"
 # copyright = '2025, Kushal Vyas, Vishwanath Saragadam, Ashok Veeraraghavan, Guha Balakrishnan'
 copyright = "2025, Alpine."
-author = 'Kushal Vyas, Vishwanath Saragadam, Ashok Veeraraghavan, Guha Balakrishnan'
-release = '0.1'
+author = "Kushal Vyas, Vishwanath Saragadam, Ashok Veeraraghavan, Guha Balakrishnan"
+release = "0.1"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['myst_parser', 
-              'sphinx_design',
-              'sphinx.ext.napoleon',
-              'sphinx.ext.autodoc',
-              'sphinx.ext.autosummary',
-              'sphinx.ext.todo',
-              'sphinx.ext.githubpages',
-              'sphinx.ext.mathjax',
-              'sphinxcontrib.bibtex',
-              'sphinx.ext.doctest',
-            #   'numpydoc.numpydoc',
-              ]
+extensions = [
+    "myst_parser",
+    "sphinx_design",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.todo",
+    "sphinx.ext.githubpages",
+    "sphinx.ext.mathjax",
+    "sphinxcontrib.bibtex",
+    "sphinx.ext.doctest",
+    #   'numpydoc.numpydoc',
+]
 
 myst_enable_extensions = [
     "colon_fence",  # Needed for ::: directives
 ]
-bibtex_bibfiles = ['references.bib']
+bibtex_bibfiles = ["references.bib"]
 bibtex_reference_style = "author_year"
 
 # Napoleon settings
@@ -54,29 +56,29 @@ napoleon_preprocess_types = False
 napoleon_type_aliases = None
 napoleon_attr_annotations = True
 
-templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 autodoc_class_signature = "separated"
 # Skip inherited members that cause docstring errors
 autodoc_default_options = {
-    'members': True,
-    'undoc-members': True,
-    'show-inheritance': True,
-    'inherited-members': False,  # Skip inherited members to avoid Lightning docstring errors
+    "members": True,
+    "undoc-members": True,
+    "show-inheritance": True,
+    "inherited-members": False,  # Skip inherited members to avoid Lightning docstring errors
 }
 
 # Suppress warnings for inherited Lightning methods
 suppress_warnings = [
-    'autodoc.import_object',
-    'ref.ref',
+    "autodoc.import_object",
+    "ref.ref",
 ]
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'pydata_sphinx_theme'
-html_static_path = ['_static']
+html_theme = "pydata_sphinx_theme"
+html_static_path = ["_static"]
 html_logo = "_static/alpine_logo.png"
 html_theme_options = {
     "show_prev_next": False,
@@ -91,8 +93,8 @@ html_theme_options = {
             # The type of image to be used (see below for details)
             "type": "fontawesome",
         }
-   ]
+    ],
 }
 html_context = {
-  "default_mode": "light",
+    "default_mode": "light",
 }
