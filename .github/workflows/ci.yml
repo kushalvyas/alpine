@@ -28,6 +28,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libsndfile1 # Required for 'soundfile'
+        
+    - name: Install CPU-only PyTorch
+      # We explicitly install the CPU versions of torch components first.
+      # This prevents pip from downloading the massive CUDA-enabled versions later.
+      run: |
+        pip install torch torchaudio torchmetrics lightning --index-url https://download.pytorch.org/whl/cpu
 
     - name: Install Alpine
       # Installs the package in editable mode with 'dev' deps (pytest)
