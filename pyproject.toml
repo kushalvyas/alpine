@@ -56,6 +56,13 @@ Issues = "https://github.com/kushalvyas/alpine/issues"
 [project.optional-dependencies]
 dev = [
     "pytest>=8.0.0",
+    "flake8",
+    "black",
 ]
+docs = [
+    "sphinx",
+    "pydata-sphinx-theme",
+]
+
 [tool.setuptools.packages.find]
 include = ["alpine*"]
