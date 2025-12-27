@@ -1,11 +1,14 @@
 from collections import OrderedDict
 import torch
 import torch.nn as nn
-from alpine.models.nonlin import Nonlinear
+
 
 class FeatureExtractor:
-    def __init__(self, model, pre_layers = [nn.Linear], post_layers = [Nonlinear]):
+    def __init__(self, model, pre_layers = [nn.Linear], post_layers = None):
         """Context manager to extract features from specified layers of a model during the forward pass."""
+        if post_layers is None:
+            from alpine.models.nonlin import Nonlinear
+            post_layers = [Nonlinear]
         self.model = model
         # Convert layer lists to tuples for instance  checking
         self.pre_layers = tuple(pre_layers)
