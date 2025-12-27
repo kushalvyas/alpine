@@ -1,6 +1,7 @@
 from .coords import *
 from .functional import *
 from .checkers import *
+from .grid_search import *
 from . import volutils
 
 def normalize(x, mode='minmax'):
