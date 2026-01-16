@@ -1,8 +1,7 @@
 from .coords import *
 from .functional import *
 from .checkers import *
-from .grid_search import *
-from . import volutils
+# grid_search requires pandas: pip install alpine[bio] then import from alpine.utils.grid_search
 
 
 def normalize(x, mode="minmax"):

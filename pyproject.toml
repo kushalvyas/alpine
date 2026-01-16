@@ -19,25 +19,15 @@ authors = [
 
 dependencies = [
     "torch>=2.8.0",
-    "torchaudio>=2.0.0",
-    "soundfile>=0.12.1",
     "lightning>=2.0.0",
     "torchmetrics>=1.0.0",
-    "numpy>=1.23",           
-    "scikit-image>=0.23.0",
-    "scikit-learn>=1.0",     
-    "pandas>=2.0.0",
+    "numpy>=1.23",
     "opencv-python>=4.0.0",
-    "open3d>=0.17.0",
-    "mcubes>=0.1.0",
     "tqdm>=4.60.0",
     "scipy>=1.10.0",
     "matplotlib>=3.0.0",
     "imageio>=2.30.0",
-    "nibabel>=5.0.0",
-    "biopandas>=0.4.0",
     "einops>=0.7.0",
-    "torchcodec>=0.7.0",
 ]
 
 classifiers = [
@@ -54,6 +44,22 @@ Repository = "https://github.com/kushalvyas/alpine.git"
 Issues = "https://github.com/kushalvyas/alpine/issues"
 
 [project.optional-dependencies]
+bio = [
+    "nibabel>=5.0.0",
+    "biopandas>=0.4.0",
+    "pandas>=2.0.0",
+]
+mesh = [
+    "open3d>=0.17.0",
+    "mcubes>=0.1.0",
+    "scikit-image>=0.23.0",
+]
+vis = [
+    "scikit-learn>=1.0",
+]
+all = [
+    "alpine[bio,mesh,vis]",
+]
 dev = [
     "pytest>=8.0.0",
     "flake8",

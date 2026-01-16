@@ -1,9 +1,14 @@
+"""Bio data loaders for NIfTI and PDB files.
+
+Requires: nibabel, biopandas, pandas
+Install with: pip install alpine[bio]
+"""
+
 import nibabel as nib
 import numpy as np
 import torch
 import pandas as pd
 from biopandas.pdb import PandasPdb
-from prody import parsePDBHeader
 from typing import Optional
 
 
@@ -19,18 +24,18 @@ def load_nii_gz(
     normalize_method="minmax",
     return_as_torch=False,
 ):
-    """_summary_
+    """Load NIfTI (.nii.gz) files.
 
     Args:
-        filename (_type_): _description_
-        data_key (str, optional): _description_. Defaults to 'f_data'.
-        squeeze_dims (bool, optional): _description_. Defaults to True.
-        normalize (bool, optional): _description_. Defaults to False.
-        normalize_method (str, optional): _description_. Defaults to 'minmax'.
-        return_as_torch (bool, optional): _description_. Defaults to False.
+        filename: Path to the .nii.gz file
+        data_key: Data key to extract. Defaults to 'f_data'.
+        squeeze_dims: Whether to squeeze singleton dimensions. Defaults to True.
+        normalize: Whether to normalize the data. Defaults to False.
+        normalize_method: Normalization method. Defaults to 'minmax'.
+        return_as_torch: Whether to return as torch tensor. Defaults to False.
 
     Returns:
-        _type_: _description_
+        Loaded data as numpy array or torch tensor.
     """
     data = nib.load(filename)
     if data_key == "f_data":
@@ -50,17 +55,17 @@ def load_nii_gz(
 
 
 def load_pdb(filename, model_index=1):
-    """Loading PDF file using PandasPdb
+    """Load PDB file using PandasPdb.
 
     Code adapted from Biopandas and @jgbrasier
     https://medium.com/@jgbrasier/working-with-pdb-files-in-python-7b538ee1b5e4
 
     Args:
-        filename (_type_): _description_
-        model_index (int, optional): _description_. Defaults to 1.
+        filename: Path to the PDB file
+        model_index: Model index to load. Defaults to 1.
 
     Returns:
-        _type_: _description_
+        DataFrame with concatenated ATOM and HETATM records.
     """
     ppdb = PandasPdb()
     protein_data = ppdb.read_pdb(filename)
@@ -69,28 +74,7 @@ def load_pdb(filename, model_index=1):
     # get atoms
     atoms = protein_model.df["ATOM"]
 
-    # get
+    # get hetatm
     hetatm = protein_model.df["HETATM"]
 
     return pd.concat([atoms, hetatm])
-
-
-if __name__ == "__main__":
-
-    nii_file = "/shared/kv30/oasis_mri/OASIS_OAS1_0060_MR1/slice_norm.nii.gz"
-    data = load_nii_gz(
-        nii_file,
-        data_key="f_data",
-        squeeze_dims=True,
-        normalize=True,
-        normalize_method="minmax",
-        return_as_torch=False,
-    )
-
-    print(data.shape)
-    print("done")
-
-    protein_data = "/home/kv30/KV/ALL_INR_PROJECTS/ALPINE_LIBRARY/alpine/examples/data/proteins/3nir.pdb"
-    protein_data = load_pdb(protein_data, model_index=1)
-    print(protein_data)
-    print("done")

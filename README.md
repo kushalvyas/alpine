@@ -17,10 +17,36 @@ Please refer to the [hosted documentation](https://kushalvyas.github.io/alpine-d
 
 ## Setup instructions
 
+To only install the core Alpine library (lightweight):
 
-    git clone git@github.com:kushalvyas/alpine.git
-    cd alpine/
-    pip install . # or pip install -e . (if you want to experiemnt or edit the library, this makes the codebase editable)
+```bash
+git clone git@github.com:kushalvyas/alpine.git
+cd alpine/
+pip install . # Core installation (lightweight)
+```
+
+For development mode (editable install):
+```bash
+pip install -e .
+```
+
+### Optional Dependencies
+
+Alpine provides optional extras for specialized features:
+
+| Extra | Install Command | Features |
+|-------|-----------------|----------|
+| `bio` | `pip install ".[bio]"` | NIfTI/PDB file loading (`nibabel`, `biopandas`, `pandas`) |
+| `mesh` | `pip install ".[mesh]"` | 3D mesh generation (`open3d`, `mcubes`, `scikit-image`) |
+| `vis` | `pip install ".[vis]"` | PCA visualization (`scikit-learn`) |
+| `all` | `pip install ".[all]"` | All optional dependencies |
+
+Example usage with extras:
+```python
+from alpine.bio import load_nii_gz, load_pdb   # Requires: pip install ".[bio]"
+from alpine.mesh import march_and_save         # Requires: pip install ".[mesh]"
+from alpine.vis import pca                     # Requires: pip install ".[vis]"
+```
 
 
 ## Contribution
@@ -62,4 +88,5 @@ If you find Alpine useful, please consider citing us!
 ---------
 
 
-__Logo Credits:__ Designed by _Isha Chakraborty_.
+### Acknowledgements
+Logo designed by Isha Chakraborty.
