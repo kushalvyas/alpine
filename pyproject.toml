@@ -12,6 +12,7 @@ license = { file = "LICENSE" }
 
 authors = [
     { name = "Kushal Vyas", email = "kvyas@rice.edu" },
+    { name = "Daniel Kim"},
     { name = "Vishwanath Saragadam" },
     { name = "Ashok Veeraraghavan" },
     { name = "Guha Balakrishnan" },
