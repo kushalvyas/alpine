@@ -1,9 +1,11 @@
+import gc
 import itertools
 import os
-import gc
-import torch
+
 import pandas as pd
+import torch
 from tqdm.auto import tqdm
+
 from alpine.trainers.alpine_base import AlpineBaseModule
 
 
@@ -40,19 +42,17 @@ class GridSearch:
         keys, values = zip(*grid.items())
         return [dict(zip(keys, v)) for v in itertools.product(*values)]
 
-    def _sanitize_metrics(self, metrics_dict):
-        """Helper to convert GPU tensors to clean Python floats/lists."""
-        clean = {}
-        for k, v in metrics_dict.items():
-            if torch.is_tensor(v):
-                v = v.detach().cpu()  # Move to CPU
-                if v.numel() == 1:
-                    clean[k] = v.item()  # Convert scalar to float
-                else:
-                    clean[k] = v.tolist()  # Convert vector to list
-            else:
-                clean[k] = v
-        return clean
+    def _get_metrics(self, val):
+        if torch.is_tensor(val):
+            val = val.detach().cpu()
+            if val.numel() == 1:
+                return val.item()
+            val = val.tolist()
+
+        if isinstance(val, list) and len(val) > 0:
+            return val[-1]
+
+        return val
 
     def run(self, coords, signal, metric_trackers=None, verbose=True):
         self.results = []
@@ -110,7 +110,9 @@ class GridSearch:
                             final_loss = final_loss.item()
 
                         raw_metrics = result.get("metrics", {})
-                        clean_metrics = self._sanitize_metrics(raw_metrics)
+                        clean_metrics = {
+                            k: self._get_metrics(v) for k, v in raw_metrics.items()
+                        }
                         status = "Success"
 
                         # Check for Winner (Save weights to CPU)
