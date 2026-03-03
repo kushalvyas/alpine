@@ -1,7 +1,6 @@
 import numpy as np
-
-from torch import nn
 import torch
+from torch import nn
 
 from ..trainers import AlpineBaseModule
 from .nonlin import FinerSine
@@ -42,6 +41,7 @@ class Finer(AlpineBaseModule):
         omegas=[30.0],
         first_bias_scale=None,
         bias=True,
+        scale_req_grad=False,
     ):
         """Implements the FINER INR :cite:`liu2024finer`.
 
@@ -58,6 +58,7 @@ class Finer(AlpineBaseModule):
             first_bias_scale (float, optional): The scale 'k' for initializing the bias of the first layer.
                 Larger values (e.g., 10-20) shift the activation to higher frequencies. If None, uses standard initialization. Defaults to None.
             bias (bool, optional): Sets bias for each layer in the INR. Defaults to True.
+            scale_req_grad (bool, optional): If True, gradients flow through the scale term in the FINER activation. Defaults to False.
         """
         super(Finer, self).__init__()
 
@@ -77,19 +78,24 @@ class Finer(AlpineBaseModule):
                 bias=bias,
             )
         )
-        self.model.append(FinerSine(omega=self.omegas[0]))
+        self.model.append(
+            FinerSine(omega=self.omegas[0], scale_req_grad=scale_req_grad)
+        )
 
         for i in range(hidden_layers - 2):
+            omega_i = (
+                self.omegas[i + 1] if i + 1 < len(self.omegas) else self.omegas[-1]
+            )
             self.model.append(
                 get_linear_layer(
                     hidden_features,
                     hidden_features,
                     is_first=False,
-                    omega=self.omegas[i + 1],
+                    omega=omega_i,
                     bias=bias,
                 )
             )
-            self.model.append(FinerSine(omega=self.omegas[i + 1]))
+            self.model.append(FinerSine(omega=omega_i, scale_req_grad=scale_req_grad))
 
         # Final layer
         self.model.append(
@@ -98,7 +104,7 @@ class Finer(AlpineBaseModule):
                 out_features,
                 is_first=False,
                 omega=self.omegas[-1],
-                bias=False,
+                bias=True,
             )
         )
 

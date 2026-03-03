@@ -92,11 +92,16 @@ class Sinc(Nonlinear):
 class FinerSine(Nonlinear):
     """Finer nonlinearity proposed by :cite: 'liu2024finer"""
 
-    def __init__(self, omega=30.0, name="finer"):
+    def __init__(self, omega=30.0, name="finer", scale_req_grad=False):
         super().__init__(name=name)
         self.omega = omega
         self.name = name.lower()
+        self.scale_req_grad = scale_req_grad
 
     def forward(self, x):
-        scale = torch.abs(x) + 1
+        if self.scale_req_grad:
+            scale = torch.abs(x) + 1
+        else:
+            with torch.no_grad():
+                scale = torch.abs(x) + 1
         return torch.sin(self.omega * scale * x)
