@@ -7,3 +7,4 @@ from .wire import Wire
 from .ffn import FFN
 from .finer import Finer
 from .gauss import Gauss
+from .fourier_reparam import LinearFR
