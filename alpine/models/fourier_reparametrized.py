@@ -5,9 +5,9 @@ import numpy as np
 import torch
 from torch import nn, Tensor
 
+from .linear.fourier_reparametrized import FourierLinear
 from ..trainers import AlpineBaseModule
 from .nonlin import ReLU, Sine
-from .utils import fourier_bases
 
 
 class InitType(str, Enum):
@@ -17,10 +17,10 @@ class InitType(str, Enum):
     fourier = 'fourier'
 
 
-class NonlinClass:
+class NonlinClass(str, Enum):
     """ Data class for the different nonlinearities."""
-    relu = ReLU
-    sine = Sine
+    relu = 'relu'
+    sine = 'sine'
 
 
 def init_layer(layer: nn.Linear, init_type: InitType, is_first: bool, omega: float | None = None):
@@ -97,81 +97,17 @@ def get_linear_layer(
     return layer
 
 
-class FourierLinear(nn.Module):
-    def __init__(self,
-                 in_features: int,
-                 out_features: int,
-                 num_phases: int,
-                 num_frequencies: int,
-                 omega: float | None = None,
-                 scaling_factor: float = 1.0,
-                 ):
-        """Fourier Reparametrization layer.
-        
-        Args:
-            in_features (int): number of input features.
-            out_features (int): number of output features.
-            num_phases (int): number of phases (P) for the Fourier basis.
-            num_frequencies (int): number of frequencies (F) for the Fourier basis. 2F phases are used.
-            omega (float, optional): Controls the bandwidth of each layer of the siren. Defaults to None for linear layers.
-            scaling_factor (float, optional): Controls the scaling factor for the Fourier basis. Defaults to 1.0.
-
-        """
-        super(FourierLinear, self).__init__()
-        # Create the Fourier basis
-        bases_ = fourier_bases(num_phases, num_frequencies, in_features, scaling_factor)
-        # Adjust omega for relu inits
-        self.omega = omega if omega is not None else 1.0
-        # Initialize the learnable weights, bases, and bias
-        self.bases = nn.Parameter(bases_, requires_grad=False)
-        self.lambda_weights = self._init_weights(num_phases, num_frequencies, out_features)
-        self.bias = self._init_bias(out_features)
-
-    def _init_weights(self, num_phases: int, num_frequencies: int, out_features: int) -> nn.Parameter:
-        """
-        Initializes weights for a layer following the principles outlined in a specific paper.
-
-        The method computes the weights based on the number of frequencies, phases, and
-        target output features. It uses bounds derived from normalization of basis vectors
-        and scaling to initialize the weights.
-
-        Args:
-            num_phases (int): Number of phases, used to calculate the total number of basis
-                vectors.
-            num_frequencies (int): Number of frequencies to consider when determining the
-                bounds for weight initialization. Uses *num_frequencies* low frequencies and
-                *num_frequencies* high frequencies.
-            out_features (int): Number of output features.
-
-        Returns:
-            nn.Parameter: Initialized weight tensor.
-        """
-        # Following the paper M = 2FP
-        m = 2 * num_frequencies * num_phases
-        # Compute norms of each basis vector (shape: m)
-        normalization = torch.norm(self.bases, p=2, dim=1)  # (m,)
-        scale = torch.sqrt(torch.tensor(6.0 / m, device=self.bases.device, dtype=self.bases.dtype))
-        # Compute correct bounds for linear layer (omega=1) or sine layer (omega!=1)
-        bounds = (scale / normalization) / self.omega
-        weights = torch.empty(out_features, m).uniform_(-1.0, 1.0)
-        weights = weights * bounds
-        return nn.Parameter(weights, requires_grad=True)
-
-    def _init_bias(self, out_features: int) -> nn.Parameter:
-        """Initializes the bias term for the layer.
-        Args:
-            out_features (int): Number of output features.
-        """
-        bias = torch.zeros(out_features, dtype=self.bases.dtype, device=self.bases.device)
-        return nn.Parameter(bias, requires_grad=True)
-
-    def forward(self, x: Tensor) -> Tensor:
-        """Computes the forward pass of the Fourier Reparametrization layer."""
-        x = x @ (self.lambda_weights @ self.bases).mT + self.bias
-        return x
+def get_nonlinearity(nonlinearity: str, omega: float) -> nn.Module:
+    """ Factory function to get the appropriate nonlinearity based on the specified type/args."""
+    if nonlinearity == "sine":
+        return Sine(omega=omega)
+    elif nonlinearity == "relu":
+        return ReLU()
+    else:
+        raise ValueError(f"Unknown nonlinearity: {nonlinearity}")
 
 
-class LinearFR(AlpineBaseModule):
+class FourierReparameterization(AlpineBaseModule):
     def __init__(
         self,
         in_features: int,
@@ -201,19 +137,25 @@ class LinearFR(AlpineBaseModule):
             outermost_linear (bool, optional): Ensures that the last layer is a linear layer with no activation. Defaults to True.
             bias (bool, optional): Sets bias for each layer in the INR. Defaults to True.
         """
-        super(LinearFR, self).__init__()
+        super(FourierReparameterization, self).__init__()
+        if nonlinearity not in NonlinClass.__dict__:
+            raise ValueError(f"Unknown nonlinearity: {nonlinearity}")
         self.nonlinearity = NonlinClass.__dict__[nonlinearity]
         self.model = nn.ModuleList()
+
+        assert hidden_layers > 1, 'Need at least 2 hidden layers'
 
         # Check if omegas are provided, if not, use default values
         if omegas is None:
             # Empty omegas are only valid with relu nonlinearities
             assert nonlinearity == 'relu', 'Omegas must be specified for non-ReLU nonlinearities'
             self.omegas = [omegas] * hidden_layers
+        elif len(omegas) == 1:
+            self.omegas = omegas * hidden_layers
+        elif len(omegas) == hidden_layers:
+            self.omegas = omegas
         else:
-            self.omegas = (
-                omegas if len(omegas) == hidden_layers else [omegas[0]] * (hidden_layers)
-            )
+            raise ValueError(f"omegas must have length 1 or hidden_layers. Got {len(omegas)}")
 
         self.model.append(
             get_linear_layer(
@@ -228,7 +170,7 @@ class LinearFR(AlpineBaseModule):
                 bias=bias,
             )
         )
-        self.model.append(self.nonlinearity())
+        self.model.append(get_nonlinearity(self.nonlinearity, self.omegas[0]))
 
         for i in range(hidden_layers - 2):
             self.model.append(
@@ -244,7 +186,7 @@ class LinearFR(AlpineBaseModule):
                     bias=bias,
                 )
             )
-            self.model.append(self.nonlinearity())
+            self.model.append(get_nonlinearity(self.nonlinearity, self.omegas[i+1]))
 
         self.model.append(
             get_linear_layer(
@@ -260,6 +202,8 @@ class LinearFR(AlpineBaseModule):
                 bias=bias,
             )
         )
+        if not outermost_linear:
+            self.model.append(get_nonlinearity(self.nonlinearity, self.omegas[-1]))
 
     def forward(self, coords: Tensor, return_features: bool = False) -> dict:
         """Compute the forward pass of the Fourier Reparametrization model.
