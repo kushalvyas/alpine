@@ -1,8 +1,7 @@
 import pytest
 import torch
 
-from alpine.models.fourier_reparametrized import FourierReparameterization, Sine, ReLU
-from alpine.models.linear.fourier_reparametrized import FourierLinear
+from alpine.models.fourier_reparametrized import FourierReparameterization, Sine, ReLU, FourierLinear
 
 
 def make_model(nonlinearity, **kwargs):
@@ -58,6 +57,10 @@ def test_omega_assertion():
     with pytest.raises(AssertionError, match='Omegas must be specified for non-ReLU nonlinearities'):
         make_model('sine')
 
+
+def test_nonlin_assertion():
+    with pytest.raises(ValueError, match='Unknown nonlinearity: foo'):
+        make_model('foo')
 
 @pytest.mark.parametrize("model_fixture", ["relu_model", "sine_model"])
 def test_forward_output_shape(request, model_fixture, coords):

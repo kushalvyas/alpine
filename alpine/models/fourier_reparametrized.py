@@ -5,16 +5,9 @@ import numpy as np
 import torch
 from torch import nn, Tensor
 
-from .linear.fourier_reparametrized import FourierLinear
+from .utils import fourier_bases
 from ..trainers import AlpineBaseModule
 from .nonlin import ReLU, Sine
-
-
-class InitType(str, Enum):
-    """ Enumeration class for the different initialization types."""
-    relu = 'relu'
-    sine = 'sine'
-    fourier = 'fourier'
 
 
 class NonlinClass(str, Enum):
@@ -23,41 +16,35 @@ class NonlinClass(str, Enum):
     sine = 'sine'
 
 
-def init_layer(layer: nn.Linear, init_type: InitType, is_first: bool, omega: float | None = None):
+def init_layer(layer: nn.Linear, nonlinearity: NonlinClass, is_first: bool, omega: float | None = None):
     """Initializes the weights of the given linear layer based on the specified initialization type.
 
     Args:
         layer (nn.Linear): The linear layer to be initialized.
-        init_type (str): Initialization type. Must be included in InitType.
+        nonlinearity (NonlinClass): Nonlinearity class type (affects initialization).
         is_first (bool): Boolean indicating whether the layer is the first in the model.
         omega (float, optional): Controls the bandwidth of each layer of the siren.
     """
-    if init_type == InitType.relu:
+
+    if nonlinearity == NonlinClass.relu:
         # Use default pytorch init
         pass
-    elif init_type == InitType.sine:
+    elif nonlinearity == NonlinClass.sine:
         if is_first:
             bound = 1 / layer.in_features
         else:
             bound = np.sqrt(6 / layer.in_features) / omega
         layer.weight.data.uniform_(-bound, bound)
-    elif init_type == InitType.fourier:
-        # Init is handled by FourierLinear
-        pass
     else:
-        raise ValueError(f"Unknown init type: {init_type}")
+        raise ValueError(f"Unknown init type: {nonlinearity}")
 
 
 def get_linear_layer(
         in_features: int,
         out_features: int,
-        num_phases: int,
-        num_frequencies: int,
-        scaling_factor: float,
-        init_type: str,
+        nonlinearity: NonlinClass,
         omega: float | None = None,
         is_first: bool = False,
-        is_last: bool = False,
         bias: bool = True) -> nn.Module:
     """
     Determines and returns an appropriate linear layer instance based on initialization type
@@ -66,33 +53,18 @@ def get_linear_layer(
     Args:
         in_features (int): Input feature dimensionality of the linear layer.
         out_features (int): Output feature dimensionality of the linear layer.
-        num_phases (int): Number of phases for FourierLinear initialization.
-        num_frequencies (int): Number of frequencies for FourierLinear initialization.
-        scaling_factor (float): Scaling factor for frequency initialization.
-        init_type (str): Specifies the initialization type (e.g., standard or Fourier).
+        nonlinearity (NonlinClass): Specifies the nonlinearity to be used (sine or relu).
         omega (float, optional): Optional omega coefficient for initialization.
         is_first (bool): Indicates if this is the first layer in the model. Defaults to False.
-        is_last (bool): Indicates if this is the last layer in the model. Defaults to False.
         bias (bool): Determines whether the linear layer includes a bias term. Defaults to True.
 
     Returns:
         nn.Module: An instance of FourierLinear or a standard linear layer.
 
     """
-
-    if init_type == InitType.fourier and not is_first and not is_last:
-        return FourierLinear(
-            in_features,
-            out_features,
-            num_phases,
-            num_frequencies,
-            omega,
-            scaling_factor,
-        )
-
-    # fallback to standard linear
+    # Instance standard linear layer with ReLU or Sine activation
     layer = nn.Linear(in_features, out_features, bias=bias)
-    init_layer(layer, init_type, is_first, omega)
+    init_layer(layer, nonlinearity, is_first, omega)
 
     return layer
 
@@ -138,9 +110,10 @@ class FourierReparameterization(AlpineBaseModule):
             bias (bool, optional): Sets bias for each layer in the INR. Defaults to True.
         """
         super(FourierReparameterization, self).__init__()
-        if nonlinearity not in NonlinClass.__dict__:
+        try:
+            self.nonlinearity = NonlinClass(nonlinearity)
+        except ValueError:
             raise ValueError(f"Unknown nonlinearity: {nonlinearity}")
-        self.nonlinearity = NonlinClass.__dict__[nonlinearity]
         self.model = nn.ModuleList()
 
         assert hidden_layers > 1, 'Need at least 2 hidden layers'
@@ -161,11 +134,8 @@ class FourierReparameterization(AlpineBaseModule):
             get_linear_layer(
                 in_features=in_features,
                 out_features=hidden_features,
-                num_phases=num_phases,
-                num_frequencies=num_frequencies,
-                scaling_factor=scaling_factor,
                 omega=self.omegas[0],
-                init_type=nonlinearity,
+                nonlinearity=self.nonlinearity,
                 is_first=True,
                 bias=bias,
             )
@@ -174,31 +144,24 @@ class FourierReparameterization(AlpineBaseModule):
 
         for i in range(hidden_layers - 2):
             self.model.append(
-                get_linear_layer(
+                FourierLinear(
                     in_features=hidden_features,
                     out_features=hidden_features,
                     num_phases=num_phases,
                     num_frequencies=num_frequencies,
                     scaling_factor=scaling_factor,
-                    omega=self.omegas[i + 1],
-                    init_type='fourier',
-                    is_first=False,
-                    bias=bias,
+                    omega=self.omegas[i + 1]
                 )
             )
             self.model.append(get_nonlinearity(self.nonlinearity, self.omegas[i+1]))
+
 
         self.model.append(
             get_linear_layer(
                 in_features=hidden_features,
                 out_features=out_features,
-                num_phases=num_phases,
-                num_frequencies=num_frequencies,
-                scaling_factor=scaling_factor,
                 omega=self.omegas[-1],
-                init_type=nonlinearity,
-                is_first=False,
-                is_last=outermost_linear,
+                nonlinearity=self.nonlinearity,
                 bias=bias,
             )
         )
@@ -229,5 +192,75 @@ class FourierReparameterization(AlpineBaseModule):
         self.load_state_dict(weights)
 
 
+class FourierLinear(nn.Linear):
+    def __init__(self,
+                 in_features: int,
+                 out_features: int,
+                 num_phases: int,
+                 num_frequencies: int,
+                 omega: float | None = None,
+                 scaling_factor: float = 1.0,
+                 ):
+        """Fourier Reparametrization layer.
 
+        Args:
+            in_features (int): number of input features.
+            out_features (int): number of output features.
+            num_phases (int): number of phases (P) for the Fourier basis.
+            num_frequencies (int): number of frequencies (F) for the Fourier basis. 2F phases are used.
+            omega (float, optional): Controls the bandwidth of each layer of the siren. Defaults to None for linear layers.
+            scaling_factor (float, optional): Controls the scaling factor for the Fourier basis. Defaults to 1.0.
 
+        """
+        super(FourierLinear, self).__init__(in_features, out_features)
+        # Create the Fourier basis
+        bases_ = fourier_bases(num_phases, num_frequencies, in_features, scaling_factor)
+        # Adjust omega for relu inits
+        self.omega = omega if omega is not None else 1.0
+        # Initialize the learnable weights, bases, and bias
+        self.bases = nn.Parameter(bases_, requires_grad=False)
+        self.weight = self._init_weights(num_phases, num_frequencies, out_features)
+        self.bias = self._init_bias(out_features)
+
+    def _init_weights(self, num_phases: int, num_frequencies: int, out_features: int) -> nn.Parameter:
+        """
+        Initializes weights for a layer following the principles outlined in a specific paper.
+
+        The method computes the weights based on the number of frequencies, phases, and
+        target output features. It uses bounds derived from normalization of basis vectors
+        and scaling to initialize the weights.
+
+        Args:
+            num_phases (int): Number of phases, used to calculate the total number of basis
+                vectors.
+            num_frequencies (int): Number of frequencies to consider when determining the
+                bounds for weight initialization. Uses *num_frequencies* low frequencies and
+                *num_frequencies* high frequencies.
+            out_features (int): Number of output features.
+
+        Returns:
+            nn.Parameter: Initialized weight tensor.
+        """
+        # Following the paper M = 2FP
+        m = 2 * num_frequencies * num_phases
+        # Compute norms of each basis vector (shape: m)
+        normalization = torch.norm(self.bases, p=2, dim=1)  # (m,)
+        scale = torch.sqrt(torch.tensor(6.0 / m, device=self.bases.device, dtype=self.bases.dtype))
+        # Compute correct bounds for linear layer (omega=1) or sine layer (omega!=1)
+        bounds = (scale / normalization) / self.omega
+        weights = torch.empty(out_features, m).uniform_(-1.0, 1.0)
+        weights = weights * bounds
+        return nn.Parameter(weights, requires_grad=True)
+
+    def _init_bias(self, out_features: int) -> nn.Parameter:
+        """Initializes the bias term for the layer.
+        Args:
+            out_features (int): Number of output features.
+        """
+        bias = torch.zeros(out_features, dtype=self.bases.dtype, device=self.bases.device)
+        return nn.Parameter(bias, requires_grad=True)
+
+    def forward(self, x: Tensor) -> Tensor:
+        """Computes the forward pass of the Fourier Reparametrization layer."""
+        x = x @ (self.weight @ self.bases).mT + self.bias
+        return x
